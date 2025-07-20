@@ -1,0 +1,62 @@
+{
+  "name": "mason-kim-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio website for Mason Kim - Global DevOps Engineer",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next export",
+    "build:export": "next build && next export",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "framer-motion": "^10.16.16",
+    "lucide-react": "^0.294.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.2.0",
+    "class-variance-authority": "^0.7.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-toast": "^1.1.5",
+    "next-themes": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.3",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "keywords": [
+    "portfolio",
+    "devops",
+    "devsecops",
+    "next.js",
+    "react",
+    "tailwindcss"
+  ],
+  "author": {
+    "name": "Mason Kim",
+    "email": "mason@example.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mason-kim/mason-kim.git"
+  },
+  "homepage": "https://mason-kim.github.io/mason-kim"
+} 
