@@ -480,10 +480,10 @@ function showCertificate(certType) {
     const modal = document.getElementById('cert-modal');
     const certImage = document.getElementById('cert-image');
     
-    // Certificate images as base64 data URLs
+    // Certificate images as direct URLs
     const certificates = {
-        'ceh': 'https://raw.githubusercontent.com/mason5052/mason-kim/main/certs/ceh.png',
-        'case-java': 'https://raw.githubusercontent.com/mason5052/mason-kim/main/certs/case-java.png'
+        'ceh': 'https://github.com/user-attachments/assets/3852908e-ae4b-42ca-b7db-7622f23f2622',
+        'case-java': 'https://github.com/user-attachments/assets/9ea1c796-193a-43e6-aee8-21b41c563f32'
     };
     
     if (certificates[certType]) {
