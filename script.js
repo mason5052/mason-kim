@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initSmoothScroll();
     initActiveNavigation();
+    initJumpNavigation();
+    initCertificateModal();
 });
 
 // Navigation Functions
@@ -454,6 +456,83 @@ window.addEventListener('error', function(e) {
     console.warn('An error occurred:', e.error);
     // Gracefully handle errors without breaking the site
 });
+
+// Certificate Modal Functions
+function initCertificateModal() {
+    const modal = document.getElementById('cert-modal');
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeCertModal();
+        }
+    });
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeCertModal();
+        }
+    });
+}
+
+function showCertificate(certType) {
+    const modal = document.getElementById('cert-modal');
+    const certImage = document.getElementById('cert-image');
+    
+    // Certificate images (base64 data URLs would go here in production)
+    const certificates = {
+        'ceh': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyOTNiIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNHB4IiBmaWxsPSIjZjhmYWZjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q0VIIENlcnRpZmljYXRlPC90ZXh0Pgo8L3N2Zz4K',
+        'case-java': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyOTNiIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNHB4IiBmaWxsPSIjZjhmYWZjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q0FTRSBKYXZhIENlcnRpZmljYXRlPC90ZXh0Pgo8L3N2Zz4K'
+    };
+    
+    if (certificates[certType]) {
+        certImage.src = certificates[certType];
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeCertModal() {
+    const modal = document.getElementById('cert-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Jump Navigation Functions
+function initJumpNavigation() {
+    updateJumpNavigation();
+    window.addEventListener('scroll', updateJumpNavigation);
+}
+
+function updateJumpNavigation() {
+    const sections = document.querySelectorAll('section[id]');
+    const jumpNavItems = document.querySelectorAll('.jump-nav-item');
+    const scrollPosition = window.scrollY + 100;
+
+    sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            jumpNavItems.forEach(item => item.classList.remove('active'));
+            if (jumpNavItems[index]) {
+                jumpNavItems[index].classList.add('active');
+            }
+        }
+    });
+}
+
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        const offsetTop = section.offsetTop - 80;
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+        });
+    }
+}
 
 // Service Worker Registration (for PWA capabilities)
 if ('serviceWorker' in navigator) {

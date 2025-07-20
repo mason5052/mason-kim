@@ -32,6 +32,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="dark-theme">
+    <!-- Jump Navigation -->
+    <div class="jump-nav" id="jump-nav">
+        <div class="jump-nav-item active" data-section="Home" onclick="scrollToSection('home')"></div>
+        <div class="jump-nav-item" data-section="About" onclick="scrollToSection('about')"></div>
+        <div class="jump-nav-item" data-section="Skills" onclick="scrollToSection('skills')"></div>
+        <div class="jump-nav-item" data-section="Experience" onclick="scrollToSection('experience')"></div>
+        <div class="jump-nav-item" data-section="Certifications" onclick="scrollToSection('certifications')"></div>
+        <div class="jump-nav-item" data-section="Contact" onclick="scrollToSection('contact')"></div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div class="cert-modal" id="cert-modal">
+        <div class="cert-modal-content">
+            <button class="cert-modal-close" onclick="closeCertModal()">×</button>
+            <img class="cert-image" id="cert-image" src="" alt="Certificate">
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
@@ -67,17 +85,16 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <p class="hero-greeting">👋 안녕하세요! Hello, I'm</p>
+                    <p class="hero-greeting">👋 Hello, I'm</p>
                     <h1 class="hero-name">
                         <span class="name-mason">Mason</span>
                         <span class="name-kim">Kim</span>
                     </h1>
-                    <p class="hero-korean">김준국</p>
-                    <h2 class="hero-title">Global DevOps Engineer</h2>
-                    <p class="hero-tagline">Bridging Development and Security in the Cloud</p>
+                    <h2 class="hero-title">Global DevOps Engineer & Security Advocate</h2>
+                    <p class="hero-tagline">Bridging Development and Security with DevSecOps</p>
                     <p class="hero-description">
-                        Global DevOps Engineer with expertise in cloud infrastructure, security, and automation. 
-                        Currently expanding into DevSecOps with a focus on security-first approaches to software delivery.
+                        DevSecOps specialist with expertise in cloud infrastructure, application security, and CI/CD automation. 
+                        Passionate about integrating security into every stage of the software development lifecycle.
                     </p>
                     <div class="hero-keywords">
                         <span class="keyword">Cloud</span>
@@ -87,11 +104,11 @@
                         <span class="keyword">Continuous Learner</span>
                     </div>
                     <div class="hero-buttons">
-                        <a href="mailto:mason@example.com" class="btn btn-primary">
-                            📧 Get In Touch
+                        <a href="mailto:ehehwnwjs5052@gmail.com?subject=Let's Connect - DevSecOps Opportunity" class="btn btn-primary">
+                            📧 Email Me
                         </a>
-                        <a href="#" class="btn btn-secondary">
-                            📄 Download Resume
+                        <a href="https://www.linkedin.com/in/junkukkim/" class="btn btn-secondary" target="_blank">
+                            💼 LinkedIn Message
                         </a>
                     </div>
                 </div>
@@ -130,59 +147,68 @@
             <div class="about-grid">
                 <div class="about-card">
                     <div class="card-icon">💼</div>
-                    <h3>Personal Information</h3>
+                    <h3>Professional Profile</h3>
                     <div class="info-list">
                         <div class="info-item">
-                            <span class="info-label">Age:</span>
-                            <span>36 years old (Born 1989-04-05)</span>
-                        </div>
-                        <div class="info-item">
                             <span class="info-label">Location:</span>
-                            <span>Remote</span>
+                            <span>Remote (US-based)</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Current Role:</span>
                             <span>Global DevOps Engineer at Zinus</span>
                         </div>
                         <div class="info-item">
+                            <span class="info-label">Specialization:</span>
+                            <span>DevSecOps, Cloud Security, CI/CD Automation</span>
+                        </div>
+                        <div class="info-item">
                             <span class="info-label">Languages:</span>
-                            <span>Korean, English (Fully Bilingual)</span>
+                            <span>English, Korean (Fully Bilingual)</span>
                         </div>
                     </div>
                 </div>
                 <div class="about-card">
                     <div class="card-icon">🎯</div>
-                    <h3>Career Direction</h3>
+                    <h3>DevSecOps Transition</h3>
                     <div class="career-info">
                         <div class="career-item">
-                            <h4>Current Focus</h4>
-                            <p>DevOps → DevSecOps Engineer</p>
+                            <h4>Current Transformation</h4>
+                            <p>Evolving from DevOps to DevSecOps through hands-on security integration projects and formal cybersecurity education</p>
                         </div>
                         <div class="career-item">
-                            <h4>Key Interests</h4>
+                            <h4>Active Security Initiatives</h4>
                             <div class="interest-tags">
-                                <span>Cloud</span>
-                                <span>Security</span>
-                                <span>DevOps</span>
-                                <span>AI</span>
+                                <span>Application Security</span>
+                                <span>CI/CD Security Automation</span>
+                                <span>Cloud Security</span>
+                                <span>Zero Trust Architecture</span>
                             </div>
                         </div>
                         <div class="career-item">
-                            <h4>Work Schedule</h4>
-                            <p>40h/week • Remote Work</p>
+                            <h4>Continuous Learning</h4>
+                            <p>Pursuing MS in Information Security while building expertise in penetration testing, vulnerability assessment, and secure infrastructure design</p>
                         </div>
                     </div>
                 </div>
                 <div class="about-card education-card">
                     <div class="card-icon">🎓</div>
-                    <h3>Education</h3>
+                    <h3>Advanced Education</h3>
                     <div class="education-item">
                         <h4>Master of Science in Information Security</h4>
-                        <p class="institution">Georgia Tech</p>
+                        <p class="institution">Georgia Institute of Technology</p>
                         <div class="education-details">
                             <span>Status: In Progress</span>
                             <span>Expected Graduation: 2026</span>
-                            <span>Type: Online Program</span>
+                            <span>Focus: Cloud Security & Incident Response</span>
+                        </div>
+                        <div class="research-areas">
+                            <h5>Research Interests</h5>
+                            <div class="research-tags">
+                                <span>Cloud Security Architecture</span>
+                                <span>Digital Forensics</span>
+                                <span>Zero Trust Implementation</span>
+                                <span>Threat Intelligence</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -417,17 +443,33 @@
                 <p class="section-subtitle">Professional certifications and continuous learning journey in cybersecurity</p>
             </div>
             <div class="cert-grid">
-                <div class="cert-card">
+                <div class="cert-card" onclick="showCertificate('ceh')">
                     <div class="cert-icon">🛡️</div>
                     <h3>Certified Ethical Hacker (CEH)</h3>
                     <p class="cert-issuer">EC-Council</p>
-                    <div class="cert-status">✅ Obtained</div>
+                    <div class="cert-details">
+                        <div class="cert-info">
+                            <span>📅 Issued: July 6, 2025</span>
+                            <span>🔄 Renewable: August 1, 2026</span>
+                            <span>📋 ID: ECC7830419652</span>
+                        </div>
+                    </div>
+                    <div class="cert-status">✅ Current & Valid</div>
+                    <button class="cert-view-btn">📋 View Certificate</button>
                 </div>
-                <div class="cert-card">
+                <div class="cert-card" onclick="showCertificate('case-java')">
                     <div class="cert-icon">💻</div>
                     <h3>Certified Application Security Engineer - Java</h3>
-                    <p class="cert-issuer">Security Innovation</p>
-                    <div class="cert-status">✅ Obtained</div>
+                    <p class="cert-issuer">EC-Council</p>
+                    <div class="cert-details">
+                        <div class="cert-info">
+                            <span>📅 Issued: August 18, 2024</span>
+                            <span>⏰ Expires: August 17, 2027</span>
+                            <span>📋 ID: ECC4310278956</span>
+                        </div>
+                    </div>
+                    <div class="cert-status">✅ Current & Valid</div>
+                    <button class="cert-view-btn">📋 View Certificate</button>
                 </div>
             </div>
             <div class="learning-highlights">
@@ -460,37 +502,43 @@
             </div>
             <div class="contact-grid">
                 <div class="contact-card">
+                    <div class="contact-icon">💼</div>
+                    <h3>Business Email</h3>
+                    <p>mkim@zinus.com</p>
+                    <a href="mailto:mkim@zinus.com?subject=Professional Inquiry" class="contact-btn">Business Contact</a>
+                </div>
+                <div class="contact-card">
                     <div class="contact-icon">📧</div>
-                    <h3>Email</h3>
-                    <p>mason@example.com</p>
-                    <a href="mailto:mason@example.com" class="contact-btn">Send Email</a>
+                    <h3>Personal Email</h3>
+                    <p>ehehwnwjs5052@gmail.com</p>
+                    <a href="mailto:ehehwnwjs5052@gmail.com?subject=DevSecOps Opportunity" class="contact-btn">Personal Contact</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">📱</div>
+                    <h3>Phone</h3>
+                    <p>+1 (773) 812-2790</p>
+                    <a href="tel:+17738122790" class="contact-btn">Call Me</a>
                 </div>
                 <div class="contact-card">
                     <div class="contact-icon">📍</div>
                     <h3>Location</h3>
-                    <p>Global Remote</p>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon">☕</div>
-                    <h3>Let's Chat</h3>
-                    <p>Open to discussing new opportunities</p>
-                    <a href="mailto:mason@example.com?subject=Collaboration Opportunity" class="contact-btn">Schedule a Chat</a>
+                    <p>Remote (US-based)</p>
                 </div>
             </div>
             <div class="social-links">
                 <h3>Connect on Social</h3>
                 <div class="social-grid">
-                    <a href="https://github.com/mason-kim" class="social-link" target="_blank">
+                    <a href="https://github.com/mason5052" class="social-link" target="_blank">
                         <div class="social-icon">🐙</div>
                         <span>GitHub</span>
                     </a>
-                    <a href="https://linkedin.com/in/mason-kim" class="social-link" target="_blank">
+                    <a href="https://www.linkedin.com/in/junkukkim/" class="social-link" target="_blank">
                         <div class="social-icon">💼</div>
                         <span>LinkedIn</span>
                     </a>
-                    <a href="mailto:mason@example.com" class="social-link">
+                    <a href="mailto:ehehwnwjs5052@gmail.com" class="social-link">
                         <div class="social-icon">📧</div>
-                        <span>Email</span>
+                        <span>Personal Email</span>
                     </a>
                 </div>
             </div>
@@ -499,10 +547,10 @@
                     <h3>Ready to Work Together?</h3>
                     <p>Whether you're looking for DevOps expertise, security consultation, or just want to connect with a fellow tech enthusiast, I'm always excited to explore new opportunities.</p>
                     <div class="cta-buttons">
-                        <a href="mailto:mason@example.com" class="btn btn-primary">
+                        <a href="mailto:ehehwnwjs5052@gmail.com?subject=DevSecOps Opportunity - Let's Connect" class="btn btn-primary">
                             🚀 Start a Conversation
                         </a>
-                        <a href="https://linkedin.com/in/mason-kim" class="btn btn-secondary" target="_blank">
+                        <a href="https://www.linkedin.com/in/junkukkim/" class="btn btn-secondary" target="_blank">
                             💼 Connect on LinkedIn
                         </a>
                     </div>
