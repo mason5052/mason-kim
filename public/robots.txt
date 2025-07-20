@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://mason-kim.github.io/mason-kim/sitemap.xml 
