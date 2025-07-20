@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Security Enhancement Project - Mason Kim</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#experience">Experience</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>E-commerce Security Enhancement Project</h1>
+                <div class="project-meta">
+                    <span class="project-period">January 2025 - Present</span>
+                    <span class="project-status">Ongoing</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Security</span>
+                    <span class="tech-tag">DevSecOps</span>
+                    <span class="tech-tag">Penetration Testing</span>
+                    <span class="tech-tag">API Security</span>
+                    <span class="tech-tag">Shopify</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="project-content container">
+            <div class="project-overview">
+                <h2>Project Overview</h2>
+                <p>Leading a comprehensive security enhancement initiative for Zinus's global e-commerce platform, focusing on identifying and remediating vulnerabilities through penetration testing and implementing robust security measures across multiple regions.</p>
+            </div>
+
+            <div class="project-challenges">
+                <h2>Key Challenges</h2>
+                <ul>
+                    <li>Coordinating security testing with Shopify platform limitations</li>
+                    <li>Managing vulnerabilities across multiple regional sites (US, MX, UK, AU)</li>
+                    <li>Balancing security improvements with platform constraints</li>
+                    <li>Implementing solutions compatible with third-party services</li>
+                </ul>
+            </div>
+
+            <div class="project-methodology">
+                <h2>Methodology & Approach</h2>
+                <h3>Phase 1: Preparation & Planning (October 2024)</h3>
+                <ul>
+                    <li>Obtained necessary approvals from Shopify for security testing</li>
+                    <li>Selected and engaged external security firm (Ebryx)</li>
+                    <li>Defined testing scope and methodology</li>
+                    <li>Established testing environments and accounts</li>
+                </ul>
+
+                <h3>Phase 2: Security Assessment (December 2024 - January 2025)</h3>
+                <ul>
+                    <li>Conducted grey-box web application penetration testing</li>
+                    <li>Weekly progress meetings and status updates</li>
+                    <li>Comprehensive vulnerability assessment</li>
+                    <li>Detailed reporting and risk analysis</li>
+                </ul>
+
+                <h3>Phase 3: Remediation (January - March 2025)</h3>
+                <ul>
+                    <li>Implemented security patches and improvements</li>
+                    <li>Enhanced API rate limiting and DDoS protection</li>
+                    <li>Strengthened file upload security</li>
+                    <li>Improved password complexity requirements</li>
+                    <li>Added anti-clickjacking measures</li>
+                </ul>
+
+                <h3>Phase 4: Validation & Ongoing Improvements (April 2025 - Present)</h3>
+                <ul>
+                    <li>Conducted revalidation testing</li>
+                    <li>Implemented additional security measures</li>
+                    <li>Continuous monitoring and improvements</li>
+                </ul>
+            </div>
+
+            <div class="project-findings">
+                <h2>Key Findings & Solutions</h2>
+                
+                <div class="finding-item">
+                    <h3>Rate Limiting Implementation</h3>
+                    <p><strong>Issue:</strong> Multiple API endpoints lacked request rate limiting, potentially allowing brute-force attacks and service disruption.</p>
+                    <p><strong>Solution:</strong> Implemented Negate security solution for DDoS protection and enhanced API rate limiting across all endpoints.</p>
+                </div>
+
+                <div class="finding-item">
+                    <h3>File Upload Security</h3>
+                    <p><strong>Issue:</strong> Unrestricted file uploads posed potential security risks.</p>
+                    <p><strong>Solution:</strong> Implemented strict file type validation, limiting uploads to PDFs and images only.</p>
+                </div>
+
+                <div class="finding-item">
+                    <h3>Email Bombing Prevention</h3>
+                    <p><strong>Issue:</strong> Vulnerability allowing unlimited email sending without authentication.</p>
+                    <p><strong>Solution:</strong> Implemented reCAPTCHA and IP-based rate limiting, coordinated with Secuvy for additional API security measures.</p>
+                </div>
+
+                <div class="finding-item">
+                    <h3>Password Security</h3>
+                    <p><strong>Issue:</strong> Weak password requirements in user registration.</p>
+                    <p><strong>Solution:</strong> Enhanced frontend password validation and explored SSO integration options.</p>
+                </div>
+
+                <div class="finding-item">
+                    <h3>Anti-Clickjacking Measures</h3>
+                    <p><strong>Issue:</strong> Vulnerability to clickjacking attacks through iframe embedding.</p>
+                    <p><strong>Solution:</strong> Implemented frame-ancestors restriction in Content Security Policy.</p>
+                </div>
+            </div>
+
+            <div class="project-team">
+                <h2>Project Team</h2>
+                
+                <div class="team-section">
+                    <h3>Internal Team</h3>
+                    <ul>
+                        <li>
+                            <strong>Mason (Junkuk) Kim</strong>
+                            <span>Global DevOps Engineer</span>
+                            <p>Led technical implementation and vulnerability remediation</p>
+                        </li>
+                        <li>
+                            <strong>Giriraj "Giri" Sharma</strong>
+                            <span>Data Privacy & Cybersecurity Manager</span>
+                            <p>Overall project management and security coordination</p>
+                        </li>
+                        <li>
+                            <strong>Derek Choi</strong>
+                            <span>IT Team</span>
+                            <p>Technical support and implementation assistance</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="team-section">
+                    <h3>External Partners</h3>
+                    <ul>
+                        <li>
+                            <strong>Ebryx, LLC</strong>
+                            <p>Security assessment and penetration testing</p>
+                            <ul>
+                                <li>Syed Sherdil Hasan (Lead Security Engineer)</li>
+                                <li>Muhammad Umer Ishaq (Project Manager)</li>
+                                <li>Muhammad Anas (Security Engineer)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-results">
+                <h2>Current Status & Outcomes</h2>
+                <ul>
+                    <li>Successfully identified and categorized 8 security vulnerabilities</li>
+                    <li>Implemented immediate fixes for critical issues</li>
+                    <li>Established ongoing security monitoring and improvement processes</li>
+                    <li>Enhanced security measures across multiple regional sites</li>
+                    <li>Coordinated with third-party vendors for comprehensive security improvements</li>
+                </ul>
+            </div>
+
+            <div class="project-learnings">
+                <h2>Key Learnings & Best Practices</h2>
+                <ul>
+                    <li>Importance of thorough security testing before implementation</li>
+                    <li>Value of coordinated approach with third-party service providers</li>
+                    <li>Need for balance between security measures and platform limitations</li>
+                    <li>Benefits of regular security assessments and continuous monitoring</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Mason Kim. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
