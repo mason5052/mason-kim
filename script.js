@@ -480,10 +480,10 @@ function showCertificate(certType) {
     const modal = document.getElementById('cert-modal');
     const certImage = document.getElementById('cert-image');
     
-    // Certificate images (base64 data URLs would go here in production)
+    // Certificate images as base64 data URLs
     const certificates = {
-        'ceh': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyOTNiIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNHB4IiBmaWxsPSIjZjhmYWZjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q0VIIENlcnRpZmljYXRlPC90ZXh0Pgo8L3N2Zz4K',
-        'case-java': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUyOTNiIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNHB4IiBmaWxsPSIjZjhmYWZjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q0FTRSBKYXZhIENlcnRpZmljYXRlPC90ZXh0Pgo8L3N2Zz4K'
+        'ceh': 'https://raw.githubusercontent.com/mason5052/mason-kim/main/certs/ceh.png',
+        'case-java': 'https://raw.githubusercontent.com/mason5052/mason-kim/main/certs/case-java.png'
     };
     
     if (certificates[certType]) {
