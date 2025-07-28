@@ -94,6 +94,46 @@
                 <h2>Key Findings & Solutions</h2>
                 
                 <div class="finding-item">
+                    <h3>Critical Vulnerability: Rebuy API Key Exposure</h3>
+                    <p><strong>Issue:</strong> Hardcoded API keys discovered in client-side JavaScript code, exposing Rebuy Engine API credentials and enabling unauthorized access to product data and cache manipulation.</p>
+                    <p><strong>Impact:</strong> High severity (CVSS 7.5) - potential for data exfiltration, cache poisoning, and service disruption affecting all users.</p>
+                    <div class="architecture-diagrams">
+                        <h4>Security Architecture Analysis</h4>
+                        
+                        <div class="diagram-container">
+                            <h5>Vulnerability Discovery Process</h5>
+                            <img src="https://github.com/user-attachments/assets/f5c2c08a-9731-4f5e-a829-ef769641bc8e" alt="Vulnerability Discovery Process - Shows the methodology used to identify hardcoded API keys in client-side code" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Comprehensive analysis workflow showing how the API key exposure vulnerability was discovered through source code review and network traffic analysis.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Attack Vector Analysis</h5>
+                            <img src="https://github.com/user-attachments/assets/8d330773-8a41-44a7-b2c7-336e8040912c" alt="Attack Vector Analysis - Illustrates potential exploitation methods for the discovered vulnerabilities" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Detailed breakdown of attack vectors including cache poisoning, data exfiltration, and service disruption scenarios.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Secure Architecture Implementation</h5>
+                            <img src="https://github.com/user-attachments/assets/27d23fbd-489d-4420-9f54-834725f5ba48" alt="Secure Architecture Implementation - Proposed solution architecture with server-side proxy and proper credential management" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Proposed secure architecture implementing server-side API proxy, environment-based credential management, and proper access controls.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Security Controls Framework</h5>
+                            <img src="https://github.com/user-attachments/assets/1b27c710-a221-4554-bbc7-7b9a71bb10a3" alt="Security Controls Framework - Comprehensive security measures including monitoring, rate limiting, and incident response" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Multi-layered security framework encompassing prevention, detection, and response mechanisms for API security.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Implementation Timeline & Phases</h5>
+                            <img src="https://github.com/user-attachments/assets/c4618b30-a45f-4bcf-b0e4-c974f99693af" alt="Implementation Timeline - Phased approach to remediation including emergency response, short-term fixes, and long-term improvements" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Strategic implementation roadmap showing emergency response actions, short-term security fixes, and long-term security infrastructure improvements.</p>
+                        </div>
+                    </div>
+                    <p><strong>Solution:</strong> Implemented emergency API key rotation, migrated to server-side proxy architecture, and established comprehensive security monitoring with real-time threat detection.</p>
+                </div>
+                
+                <div class="finding-item">
                     <h3>Rate Limiting Implementation</h3>
                     <p><strong>Issue:</strong> Multiple API endpoints lacked request rate limiting, potentially allowing brute-force attacks and service disruption.</p>
                     <p><strong>Solution:</strong> Implemented Negate security solution for DDoS protection and enhanced API rate limiting across all endpoints.</p>
@@ -167,11 +207,13 @@
             <div class="project-results">
                 <h2>Current Status & Outcomes</h2>
                 <ul>
-                    <li>Successfully identified and categorized 8 security vulnerabilities</li>
-                    <li>Implemented immediate fixes for critical issues</li>
-                    <li>Established ongoing security monitoring and improvement processes</li>
-                    <li>Enhanced security measures across multiple regional sites</li>
-                    <li>Coordinated with third-party vendors for comprehensive security improvements</li>
+                    <li>Successfully identified and categorized 8+ security vulnerabilities including critical API key exposure</li>
+                    <li>Discovered high-severity Rebuy API vulnerability (CVSS 7.5) through comprehensive security research</li>
+                    <li>Implemented immediate emergency response including API key rotation and server-side proxy architecture</li>
+                    <li>Established comprehensive security monitoring with real-time threat detection capabilities</li>
+                    <li>Enhanced security measures across multiple regional sites with multi-layered protection</li>
+                    <li>Coordinated responsible disclosure process with affected vendors and security teams</li>
+                    <li>Developed detailed security documentation and architectural diagrams for future reference</li>
                 </ul>
             </div>
 
