@@ -32,23 +32,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="dark-theme">
-    <!-- Jump Navigation -->
-    <div class="jump-nav" id="jump-nav">
-        <div class="jump-nav-item active" data-section="Home" onclick="scrollToSection('home')"></div>
-        <div class="jump-nav-item" data-section="About" onclick="scrollToSection('about')"></div>
-        <div class="jump-nav-item" data-section="Skills" onclick="scrollToSection('skills')"></div>
-        <div class="jump-nav-item" data-section="Experience" onclick="scrollToSection('experience')"></div>
-        <div class="jump-nav-item" data-section="Certifications" onclick="scrollToSection('certifications')"></div>
-        <div class="jump-nav-item" data-section="Contact" onclick="scrollToSection('contact')"></div>
-    </div>
-
-    <!-- Certificate Modal -->
-    <div class="cert-modal" id="cert-modal">
-        <div class="cert-modal-content">
-            <button class="cert-modal-close" onclick="closeCertModal()">×</button>
-            <img class="cert-image" id="cert-image" src="" alt="Certificate">
-        </div>
-    </div>
 
     <!-- Navigation -->
     <nav class="nav">
@@ -59,11 +42,7 @@
             </div>
             <div class="nav-menu" id="nav-menu">
                 <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#skills" class="nav-link">Skills</a>
-                <a href="#experience" class="nav-link">Experience</a>
-                <a href="#certifications" class="nav-link">Certifications</a>
-                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#projects" class="nav-link">Projects</a>
                 <button class="theme-toggle" id="theme-toggle">🌓</button>
             </div>
             <div class="nav-toggle" id="nav-toggle">
@@ -90,26 +69,12 @@
                         <span class="name-mason">Mason</span>
                         <span class="name-kim">Kim</span>
                     </h1>
-                    <h2 class="hero-title">Global DevOps Engineer & Security Advocate</h2>
-                    <p class="hero-tagline">Bridging Development and Security with DevSecOps</p>
-                    <p class="hero-description">
-                        DevSecOps specialist with expertise in cloud infrastructure, application security, and CI/CD automation. 
-                        Passionate about integrating security into every stage of the software development lifecycle.
-                    </p>
-                    <div class="hero-keywords">
-                        <span class="keyword">Cloud</span>
-                        <span class="keyword">Security</span>
-                        <span class="keyword">DevOps</span>
-                        <span class="keyword">AI</span>
-                        <span class="keyword">Continuous Learner</span>
-                    </div>
+                    <h2 class="hero-title">DevSecOps Engineer</h2>
+                    <p class="hero-tagline">Hands-on projects in cloud infrastructure and security</p>
+                    <p class="hero-description">Explore real-world projects that showcase my experience in building secure and automated cloud environments.</p>
                     <div class="hero-buttons">
-                        <a href="mailto:ehehwnwjs5052@gmail.com?subject=Let's Connect - DevSecOps Opportunity" class="btn btn-primary">
-                            📧 Email Me
-                        </a>
-                        <a href="https://www.linkedin.com/in/junkukkim/" class="btn btn-secondary" target="_blank">
-                            💼 LinkedIn Message
-                        </a>
+                        <a href="#projects" class="btn btn-primary">🚀 Explore Projects</a>
+                        <a href="mailto:ehehwnwjs5052@gmail.com?subject=Let's Connect - DevSecOps Opportunity" class="btn btn-secondary">📧 Email Me</a>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -137,340 +102,15 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">About Me</h2>
-                <p class="section-subtitle">Learn more about my background, education, and career journey in DevOps and Security</p>
+                <div class="section-icon">🛠️</div>
+                <h2 class="section-title">Projects</h2>
+                <p class="section-subtitle">Selected work demonstrating my DevSecOps skills.</p>
             </div>
-            <div class="about-grid">
-                <div class="about-card">
-                    <div class="card-icon">💼</div>
-                    <h3>Professional Profile</h3>
-                    <div class="info-list">
-                        <div class="info-item">
-                            <span class="info-label">Location:</span>
-                            <span>Remote (US-based)</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Current Role:</span>
-                            <span>Global DevOps Engineer at Zinus</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Specialization:</span>
-                            <span>DevSecOps, Cloud Security, CI/CD Automation</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Languages:</span>
-                            <span>English, Korean (Fully Bilingual)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">🎯</div>
-                    <h3>DevSecOps Transition</h3>
-                    <div class="career-info">
-                        <div class="career-item">
-                            <h4>Current Transformation</h4>
-                            <p>Evolving from DevOps to DevSecOps through hands-on security integration projects and formal cybersecurity education</p>
-                        </div>
-                        <div class="career-item">
-                            <h4>Active Security Initiatives</h4>
-                            <div class="interest-tags">
-                                <span>Application Security</span>
-                                <span>CI/CD Security Automation</span>
-                                <span>Cloud Security</span>
-                                <span>Zero Trust Architecture</span>
-                            </div>
-                        </div>
-                        <div class="career-item">
-                            <h4>Continuous Learning</h4>
-                            <p>Pursuing MS in Information Security while building expertise in penetration testing, vulnerability assessment, and secure infrastructure design</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-card education-card">
-                    <div class="card-icon">🎓</div>
-                    <h3>Advanced Education</h3>
-                    <div class="education-item">
-                        <h4>Master of Science in Information Security</h4>
-                        <p class="institution">Georgia Institute of Technology</p>
-                        <div class="education-details">
-                            <span>Status: In Progress</span>
-                            <span>Expected Graduation: 2026</span>
-                            <span>Focus: Cloud Security & Incident Response</span>
-                        </div>
-                        <div class="research-areas">
-                            <h5>Research Interests</h5>
-                            <div class="research-tags">
-                                <span>Cloud Security Architecture</span>
-                                <span>Digital Forensics</span>
-                                <span>Zero Trust Implementation</span>
-                                <span>Threat Intelligence</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-icon">⚡</div>
-                <h2 class="section-title">Technical Skills</h2>
-                <p class="section-subtitle">Comprehensive expertise across cloud infrastructure, security, and automation technologies</p>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">☁️</div>
-                        <h3>Cloud & IaC</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <span>AWS (EKS, CloudWatch, CDK)</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="90"></div>
-                            </div>
-                            <span class="skill-level">90%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Terraform</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="85"></div>
-                            </div>
-                            <span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Pulumi</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="80"></div>
-                            </div>
-                            <span class="skill-level">80%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">🔄</div>
-                        <h3>CI/CD & GitOps</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <span>GitHub Actions</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="90"></div>
-                            </div>
-                            <span class="skill-level">90%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>ArgoCD</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="85"></div>
-                            </div>
-                            <span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Tekton</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="75"></div>
-                            </div>
-                            <span class="skill-level">75%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">🐳</div>
-                        <h3>Container & Orchestration</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <span>Docker</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="90"></div>
-                            </div>
-                            <span class="skill-level">90%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Kubernetes</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="85"></div>
-                            </div>
-                            <span class="skill-level">85%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <div class="category-header">
-                        <div class="category-icon">🔒</div>
-                        <h3>Monitoring & Security</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <span>Prometheus</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="85"></div>
-                            </div>
-                            <span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>AWS Secrets Manager</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="85"></div>
-                            </div>
-                            <span class="skill-level">85%</span>
-                        </div>
-                        <div class="skill-item">
-                            <span>Zero-Trust IAM</span>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-level="80"></div>
-                            </div>
-                            <span class="skill-level">80%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-icon">💼</div>
-                <h2 class="section-title">Professional Experience</h2>
-                <p class="section-subtitle">Journey through DevOps and security engineering with focus on cloud infrastructure</p>
-            </div>
-            <div class="timeline">
-                <!-- Zinus -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Global DevOps Engineer</h3>
-                            <span class="timeline-period">Jun 2023 - Present</span>
-                        </div>
-                        <div class="timeline-company">
-                            <span class="company">Zinus</span>
-                            <span class="location">Tracy, California, United States · Remote</span>
-                        </div>
-                        <div class="responsibilities">
-                            <ul>
-                                <li>Automated 90+ e‑commerce microservice deployments via GitHub Actions & Terraform, cutting release time by 70%</li>
-                                <li>Migrated an in‑house customer service web platform and supporting workloads from on‑prem to AWS (EC2, S3, VPC), achieving 99.99% uptime with secure IAM/VPN access</li>
-                                <li>Drove an enterprise‑level bot‑mitigation program: deployed reCAPTCHA v3 across customer sign‑up flows and a custom Contact‑Form microservice</li>
-                                <li>Coordinated end‑to‑end penetration testing; remediated critical OWASP Top‑10 findings and added ML‑based email validation & bot detection</li>
-                                <li>Embedded Semgrep & OWASP ZAP into CI/CD, tripling pre‑release vulnerability detection</li>
-                                <li>Standardized DevOps processes across four regions (US, MX, UK, AU), lowering cloud spend by 25%</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- IT Infrastructure Specialist -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>IT Infrastructure Specialist</h3>
-                            <span class="timeline-period">May 2022 - Jun 2023</span>
-                        </div>
-                        <div class="timeline-company">
-                            <span class="company">Zinus</span>
-                            <span class="location">McDonough, Georgia, United States · Hybrid</span>
-                        </div>
-                        <div class="responsibilities">
-                            <ul>
-                                <li>Managed hybrid infrastructure (on‑prem & AWS/Azure) supporting 200+ servers across 5 data centers</li>
-                                <li>Automated server provisioning with Terraform & Ansible, cutting manual configuration time by 60%</li>
-                                <li>Deployed centralized monitoring stack (Prometheus, Grafana) and alerting, improving incident response time by 40%</li>
-                                <li>Migrated legacy Windows workloads to containerized Linux environments, reducing licensing costs by 30%</li>
-                                <li>Hardened network security with Fortinet firewalls and VPN policies, achieving zero critical security incidents</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Supply Chain System Manager -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Supply Chain System Manager</h3>
-                            <span class="timeline-period">Oct 2021 - May 2022</span>
-                        </div>
-                        <div class="timeline-company">
-                            <span class="company">CJ Logistics America</span>
-                            <span class="location">Locust Grove, Georgia, United States · On-site</span>
-                        </div>
-                        <div class="responsibilities">
-                            <ul>
-                                <li>Automated order entry and shipping processes with Python Selenium bots, saving 400+ hours per month</li>
-                                <li>Partnered with RPA team to refactor legacy scripts, boosting bot reliability by 50%</li>
-                                <li>Integrated RPA workflows with SAP SD and logistics systems, decreasing data‑entry errors by 90%</li>
-                                <li>Built real‑time inventory data pipeline feeding Power BI dashboards, improving demand‑planning accuracy</li>
-                                <li>Established bot governance and secure credential management with 100% SOX compliance</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- QA Analyst -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Software Quality Assurance Analyst</h3>
-                            <span class="timeline-period">Apr 2021 - Oct 2021</span>
-                        </div>
-                        <div class="timeline-company">
-                            <span class="company">BTI Solutions, Inc.</span>
-                            <span class="location">Dallas, Texas, United States · Hybrid</span>
-                        </div>
-                        <div class="responsibilities">
-                            <ul>
-                                <li>Analyzed UMTS/GSM CS‑PS and LTE data session logs using QxDM, QPST, XCAL, and Wireshark</li>
-                                <li>Validated multi‑RAT wireless protocols across PHY/MAC and signaling layers for 10+ global carriers</li>
-                                <li>Partnered with chipset vendors to reduce dropped‑call rate by 30% prior to commercial launch</li>
-                                <li>Authored test cases for VoLTE, VoWiFi, and IMS call flows, uncovering 12 critical issues</li>
-                                <li>Led knowledge‑sharing sessions on wireless stack architecture, improving triage efficiency by 20%</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Web Developer -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Web Developer</h3>
-                            <span class="timeline-period">Jan 2020 - Apr 2021</span>
-                        </div>
-                        <div class="timeline-company">
-                            <span class="company">SM Beauty LLC</span>
-                            <span class="location">Schiller Park, Illinois, United States · On-site</span>
-                        </div>
-                        <div class="responsibilities">
-                            <ul>
-                                <li>Executed weekly network and data health checks, boosting system uptime by 12%</li>
-                                <li>Drove continuous improvement initiatives, delivering 8 software upgrades that reduced incidents by 25%</li>
-                                <li>Authored and enforced over 10 IT policies, increasing audit compliance by 30%</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-
-            <!-- Projects Grid -->
             <div class="projects-grid">
-                <!-- Security Enhancement Project -->
                 <div class="project-card" onclick="window.location.href='projects/security-enhancement.html'">
                     <div class="project-header">
                         <h3>E-commerce Security Enhancement</h3>
@@ -499,177 +139,19 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Leadership -->
-            <div class="leadership">
-                <div class="leadership-header">
-                    <div class="leadership-icon">👥</div>
-                    <h3>Leadership & Communication</h3>
-                </div>
-                <div class="leadership-grid">
-                    <div class="leadership-card">
-                        <div class="leadership-card-icon">🎤</div>
-                        <h4>Internal DevOps & Security Workshops</h4>
-                        <p class="workshop-count">10+ presentations</p>
-                        <div class="workshop-topics">
-                            <span>IaC</span>
-                            <span>GitOps</span>
-                            <span>AIOps</span>
-                            <span>Security Best Practices</span>
-                        </div>
-                    </div>
-                    <div class="leadership-card">
-                        <div class="leadership-card-icon">📚</div>
-                        <h4>Mentoring & Documentation</h4>
-                        <p>Leading internal documentation efforts and establishing code review culture</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Certifications Section -->
-    <section id="certifications" class="certifications">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-icon">🏆</div>
-                <h2 class="section-title">Certifications & Education</h2>
-                <p class="section-subtitle">Professional certifications and continuous learning journey in cybersecurity</p>
-            </div>
-            <div class="cert-grid">
-                <div class="cert-card">
-                    <div class="cert-icon">🛡️</div>
-                    <h3>Certified Ethical Hacker (CEH)</h3>
-                    <p class="cert-issuer">EC-Council</p>
-                    <div class="cert-details">
-                        <div class="cert-info">
-                            <span>📅 Issued: July 6, 2025</span>
-                            <span>🔄 Renewable: August 1, 2026</span>
-                            <span>📋 ID: ECC7830419652</span>
-                        </div>
-                    </div>
-                    <div class="cert-status">✅ Current & Valid</div>
-                    <a href="certs/ceh.html" target="_blank" class="cert-view-btn">📋 View Certificate</a>
-                </div>
-                <div class="cert-card">
-                    <div class="cert-icon">💻</div>
-                    <h3>Certified Application Security Engineer - Java</h3>
-                    <p class="cert-issuer">EC-Council</p>
-                    <div class="cert-details">
-                        <div class="cert-info">
-                            <span>📅 Issued: August 18, 2024</span>
-                            <span>⏰ Expires: August 17, 2027</span>
-                            <span>📋 ID: ECC4310278956</span>
-                        </div>
-                    </div>
-                    <div class="cert-status">✅ Current & Valid</div>
-                    <a href="certs/case-java.html" target="_blank" class="cert-view-btn">📋 View Certificate</a>
-                </div>
-            </div>
-            <div class="learning-highlights">
-                <div class="highlight-card">
-                    <div class="highlight-icon">🛡️</div>
-                    <h4>Security Focus</h4>
-                    <p>Specialized in ethical hacking and application security engineering</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">
-                        <img src="https://github.com/user-attachments/assets/d6c27382-9d43-4be0-a38b-28cfc3f99a33" alt="Georgia Tech Logo" style="width: 100%; height: 100%; object-fit: contain;">
-                    </div>
-                    <h4>Advanced Degree</h4>
-                    <p>Currently pursuing Master's in Information Security at Georgia Tech</p>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-icon">📚</div>
-                    <h4>Industry Recognition</h4>
-                    <p>Certified in ethical hacking and secure application development</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-icon">💬</div>
-                <h2 class="section-title">Let's Connect</h2>
-                <p class="section-subtitle">Ready to discuss DevOps, security, or collaboration opportunities?</p>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="contact-icon">💼</div>
-                    <h3>Business Email</h3>
-                    <p>mkim@zinus.com</p>
-                    <a href="mailto:mkim@zinus.com?subject=Professional Inquiry" class="contact-btn">Business Contact</a>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon">📧</div>
-                    <h3>Personal Email</h3>
-                    <p>ehehwnwjs5052@gmail.com</p>
-                    <a href="mailto:ehehwnwjs5052@gmail.com?subject=DevSecOps Opportunity" class="contact-btn">Personal Contact</a>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon">📱</div>
-                    <h3>Phone</h3>
-                    <p>+1 (773) 812-2790</p>
-                    <a href="tel:+17738122790" class="contact-btn">Call Me</a>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon">📍</div>
-                    <h3>Location</h3>
-                    <p>Remote (US-based)</p>
-                </div>
-            </div>
-            <div class="social-links">
-                <h3>Connect on Social</h3>
-                <div class="social-grid">
-                    <a href="https://github.com/mason5052" class="social-link" target="_blank">
-                        <div class="social-icon">🐙</div>
-                        <span>GitHub</span>
-                    </a>
-                    <a href="https://www.linkedin.com/in/junkukkim/" class="social-link" target="_blank">
-                        <div class="social-icon">💼</div>
-                        <span>LinkedIn</span>
-                    </a>
-                    <a href="mailto:ehehwnwjs5052@gmail.com" class="social-link">
-                        <div class="social-icon">📧</div>
-                        <span>Personal Email</span>
-                    </a>
-                </div>
-            </div>
-            <div class="cta-section">
-                <div class="cta-card">
-                    <h3>Ready to Work Together?</h3>
-                    <p>Whether you're looking for DevOps expertise, security consultation, or just want to connect with a fellow tech enthusiast, I'm always excited to explore new opportunities.</p>
-                    <div class="cta-buttons">
-                        <a href="mailto:ehehwnwjs5052@gmail.com?subject=DevSecOps Opportunity - Let's Connect" class="btn btn-primary">
-                            🚀 Start a Conversation
-                        </a>
-                        <a href="https://www.linkedin.com/in/junkukkim/" class="btn btn-secondary" target="_blank">
-                            💼 Connect on LinkedIn
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-info">
                     <h3>Mason Kim</h3>
                     <p>Global DevOps Engineer</p>
-                    <p>Bridging Development and Security in the Cloud</p>
                 </div>
                 <div class="footer-links">
                     <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#experience">Experience</a>
-                    <a href="#contact">Contact</a>
+                    <a href="#projects">Projects</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -682,4 +164,4 @@
     <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
