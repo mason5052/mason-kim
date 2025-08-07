@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initParticles();
     initSmoothScroll();
     initActiveNavigation();
+    sortProjects();
     initScrollAnimations();
 });
 
@@ -145,6 +146,18 @@ function initScrollAnimations() {
         el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         observer.observe(el);
     });
+}
+
+function sortProjects() {
+    const container = document.getElementById('projects-container');
+    if (!container) return;
+    const cards = Array.from(container.querySelectorAll('.project-card'));
+    cards.sort((a, b) => {
+        const weightA = parseInt(a.dataset.weight) || 0;
+        const weightB = parseInt(b.dataset.weight) || 0;
+        return weightB - weightA;
+    });
+    cards.forEach(card => container.appendChild(card));
 }
 
 if ('serviceWorker' in navigator) {
