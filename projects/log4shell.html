@@ -68,7 +68,7 @@ timeline
                 </ul>
                 <pre class="mermaid">
 graph LR
-    A((Attacker)) -->|${jndi:}| B[Vulnerable App]
+    A((Attacker)) -->|"${jndi:}"| B[Vulnerable App]
     B -->|LDAP query| C[Marshalsec]
     C -->|HTTP redirect| D[Payload Server]
     D --> B
