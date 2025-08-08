@@ -6,39 +6,6 @@
     <title>E-commerce Security Enhancement Project - Mason Kim</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="project-details.css">
-    <!-- Page-specific styles for security-enhancement -->
-    <style>
-        /* Key metrics grid */
-        .key-metrics {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;}
-        .metric-card {background:var(--bg-card);border:1px solid var(--border-color);border-radius:0.5rem;padding:1rem;}
-        .metric-card h3 {margin:0 0 .25rem;font-size:1rem;color:var(--accent-primary);}
-        .metric-card p {margin:0;font-size:0.875rem;color:var(--text-secondary);}
-        /* Small section navigation */
-        .section-nav {margin-top:1rem;display:flex;flex-wrap:wrap;gap:.75rem;}
-        .section-nav a {font-size:0.875rem;color:var(--accent-primary);text-decoration:none;}
-        .section-nav a:focus,.section-nav a:hover {text-decoration:underline;}
-        /* Collapsible sections */
-        details.collapsible {margin-bottom:1.5rem;border:1px solid var(--border-color);border-radius:.5rem;padding:1rem;background:var(--bg-card);}
-        details.collapsible summary {cursor:pointer;list-style:none;}
-        details.collapsible summary::-webkit-details-marker {display:none;}
-        details.collapsible summary h2 {display:inline;font-size:1.25rem;}
-        /* Findings grid */
-        .finding-grid {display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
-        .finding-pair {display:contents;}
-        .finding-pair .finding,.finding-pair .solution {background:var(--bg-card);border:1px solid var(--border-color);border-radius:.5rem;padding:1rem;}
-        .finding-pair .solution {border-left:none;}
-        @media(max-width:768px){
-            .finding-grid {grid-template-columns:1fr;}
-            .finding-pair .solution {border-left:1px solid var(--border-color);}
-        }
-        /* Diagrams */
-        .diagram-group figure {margin:2rem 0;}
-        .diagram-group .plantuml {display:none;max-width:100%;height:auto;}
-        /* View details links */
-        .view-details {font-size:0.875rem;color:var(--accent-primary);text-decoration:none;margin-left:.5rem;}
-        .view-details:focus,.view-details:hover {text-decoration:underline;}
-    </style>
-    <!-- Toggle diagrams: set USE_PLANTUML=true in the script at bottom to use PlantUML images -->
 </head>
 <body class="dark-theme">
     <nav class="navbar">
@@ -69,216 +36,196 @@
                     <span class="tech-tag">Shopify</span>
                     <span class="tech-tag">AWS</span>
                 </div>
-                <div class="key-metrics">
-                    <div class="metric-card"><h3>8+ vulnerabilities</h3><p>Across multi-region storefronts</p></div>
-                    <div class="metric-card"><h3>Rebuy API key exposure</h3><p>Mitigated (CVSS ~7+)</p></div>
-                    <div class="metric-card"><h3>0 downtime</h3><p>During remediation</p></div>
-                    <div class="metric-card"><h3>WAF + proxy in place</h3><p>Server-side shielding</p></div>
-                </div>
-                <nav class="section-nav" aria-label="Section navigation">
-                    <a href="#overview" class="view-details">View Details: Overview</a>
-                    <a href="#challenges" class="view-details">View Details: Challenges</a>
-                    <a href="#methodology" class="view-details">View Details: Methodology</a>
-                    <a href="#findings" class="view-details">View Details: Findings &amp; Solutions</a>
-                    <a href="#architecture" class="view-details">View Details: Architecture</a>
-                    <a href="#team" class="view-details">View Details: Team &amp; My Role</a>
-                    <a href="#outcomes" class="view-details">View Details: Outcomes</a>
-                    <a href="#lessons" class="view-details">View Details: Lessons</a>
-                </nav>
             </div>
         </header>
 
         <section class="project-content container">
-            <details class="collapsible" id="overview">
-                <summary><h2>Overview</h2></summary>
-                <p>Hardening a global Shopify storefront by auditing code and traffic, then layering server-side proxies, key rotation, and WAF controls to reduce exposure.</p>
-            </details>
+            <div class="project-overview">
+                <h2>Project Overview</h2>
+                <p>Leading a comprehensive security enhancement initiative for Zinus's global e-commerce platform, focusing on identifying and remediating vulnerabilities through penetration testing and implementing robust security measures across multiple regions.</p>
+            </div>
 
-            <details class="collapsible" id="challenges">
-                <summary><h2>Key Challenges</h2></summary>
+            <div class="project-challenges">
+                <h2>Key Challenges</h2>
                 <ul>
-                    <li>Hard-coded API keys in client scripts</li>
-                    <li>Absent WAF rules at the edge</li>
-                    <li>Potential cache poisoning vectors</li>
-                    <li>Rate limiting gaps and bot traffic</li>
+                    <li>Coordinating security testing with Shopify platform limitations</li>
+                    <li>Managing vulnerabilities across multiple regional sites (US, MX, UK, AU)</li>
+                    <li>Balancing security improvements with platform constraints</li>
+                    <li>Implementing solutions compatible with third-party services</li>
                 </ul>
-            </details>
+            </div>
 
-            <details class="collapsible" id="methodology">
-                <summary><h2>Methodology</h2></summary>
-                <h3>Discovery / Assessment</h3>
+            <div class="project-methodology">
+                <h2>Methodology & Approach</h2>
+                <h3>Phase 1: Preparation & Planning (October 2024)</h3>
                 <ul>
-                    <li>Code review &amp; traffic analysis</li>
-                    <li>DAST/SAST hints</li>
+                    <li>Obtained necessary approvals from Shopify for security testing</li>
+                    <li>Selected and engaged external security firm (Ebryx)</li>
+                    <li>Defined testing scope and methodology</li>
+                    <li>Established testing environments and accounts</li>
                 </ul>
-                <h3>Threat Modeling</h3>
-                <ul>
-                    <li>Attack surface mapping</li>
-                    <li>Data flow diagrams</li>
-                </ul>
-                <h3>Remediation</h3>
-                <ul>
-                    <li>Server-side proxy &amp; key rotation</li>
-                    <li>WAF rules &amp; build-time secrets injection</li>
-                    <li>CI/CD checks</li>
-                </ul>
-                <h3>Validation</h3>
-                <ul>
-                    <li>Regression tests &amp; re-scan</li>
-                    <li>Blue/green rollout</li>
-                </ul>
-            </details>
 
-            <details class="collapsible" id="findings">
-                <summary><h2>Findings &amp; Solutions</h2></summary>
-                <div class="finding-grid">
-                    <div class="finding-pair">
-                        <div class="finding">
-                            <h3>Rebuy API key exposure</h3>
-                            <p>Keys in client code allowed data scraping.</p>
+                <h3>Phase 2: Security Assessment (December 2024 - January 2025)</h3>
+                <ul>
+                    <li>Conducted grey-box web application penetration testing</li>
+                    <li>Weekly progress meetings and status updates</li>
+                    <li>Comprehensive vulnerability assessment</li>
+                    <li>Detailed reporting and risk analysis</li>
+                </ul>
+
+                <h3>Phase 3: Remediation (January - March 2025)</h3>
+                <ul>
+                    <li>Implemented security patches and improvements</li>
+                    <li>Enhanced API rate limiting and DDoS protection</li>
+                    <li>Strengthened file upload security</li>
+                    <li>Improved password complexity requirements</li>
+                    <li>Added anti-clickjacking measures</li>
+                </ul>
+
+                <h3>Phase 4: Validation & Ongoing Improvements (April 2025 - Present)</h3>
+                <ul>
+                    <li>Conducted revalidation testing</li>
+                    <li>Implemented additional security measures</li>
+                    <li>Continuous monitoring and improvements</li>
+                </ul>
+            </div>
+
+            <div class="project-findings">
+                <h2>Key Findings & Solutions</h2>
+                
+                <div class="finding-item">
+                    <h3>Critical Vulnerability: Rebuy API Key Exposure</h3>
+                    <p><strong>Issue:</strong> Hardcoded API keys discovered in client-side JavaScript code, exposing Rebuy Engine API credentials and enabling unauthorized access to product data and cache manipulation.</p>
+                    <p><strong>Impact:</strong> High severity (CVSS 7.5) - potential for data exfiltration, cache poisoning, and service disruption affecting all users.</p>
+                    <div class="architecture-diagrams">
+                        <h4>Security Architecture Analysis</h4>
+                        
+                        <div class="diagram-container">
+                            <h5>Vulnerability Discovery Process</h5>
+                            <img src="https://github.com/user-attachments/assets/f5c2c08a-9731-4f5e-a829-ef769641bc8e" alt="Vulnerability Discovery Process - Shows the methodology used to identify hardcoded API keys in client-side code" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Comprehensive analysis workflow showing how the API key exposure vulnerability was discovered through source code review and network traffic analysis.</p>
                         </div>
-                        <div class="solution">
-                            <h3>Fix</h3>
-                            <p>Rotated keys and routed calls through proxy.</p>
+
+                        <div class="diagram-container">
+                            <h5>Attack Vector Analysis</h5>
+                            <img src="https://github.com/user-attachments/assets/8d330773-8a41-44a7-b2c7-336e8040912c" alt="Attack Vector Analysis - Illustrates potential exploitation methods for the discovered vulnerabilities" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Detailed breakdown of attack vectors including cache poisoning, data exfiltration, and service disruption scenarios.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Secure Architecture Implementation</h5>
+                            <img src="https://github.com/user-attachments/assets/27d23fbd-489d-4420-9f54-834725f5ba48" alt="Secure Architecture Implementation - Proposed solution architecture with server-side proxy and proper credential management" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Proposed secure architecture implementing server-side API proxy, environment-based credential management, and proper access controls.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Security Controls Framework</h5>
+                            <img src="https://github.com/user-attachments/assets/1b27c710-a221-4554-bbc7-7b9a71bb10a3" alt="Security Controls Framework - Comprehensive security measures including monitoring, rate limiting, and incident response" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Multi-layered security framework encompassing prevention, detection, and response mechanisms for API security.</p>
+                        </div>
+
+                        <div class="diagram-container">
+                            <h5>Implementation Timeline & Phases</h5>
+                            <img src="https://github.com/user-attachments/assets/c4618b30-a45f-4bcf-b0e4-c974f99693af" alt="Implementation Timeline - Phased approach to remediation including emergency response, short-term fixes, and long-term improvements" width="100%" style="max-width: 800px; height: auto;" />
+                            <p class="diagram-caption">Strategic implementation roadmap showing emergency response actions, short-term security fixes, and long-term security infrastructure improvements.</p>
                         </div>
                     </div>
-                    <div class="finding-pair">
-                        <div class="finding">
-                            <h3>Rate-limit gaps</h3>
-                            <p>Unauthenticated endpoints vulnerable to abuse.</p>
-                        </div>
-                        <div class="solution">
-                            <h3>Fix</h3>
-                            <p>Edge WAF rules and bot filters enforced quotas.</p>
-                        </div>
-                    </div>
-                    <div class="finding-pair">
-                        <div class="finding">
-                            <h3>Cache poisoning risk</h3>
-                            <p>Unnormalized headers enabled cache key smuggling.</p>
-                        </div>
-                        <div class="solution">
-                            <h3>Fix</h3>
-                            <p>Cache-key normalization rules deployed.</p>
-                        </div>
-                    </div>
-                    <div class="finding-pair">
-                        <div class="finding">
-                            <h3>Secrets in repos</h3>
-                            <p>Build configs carried sensitive tokens.</p>
-                        </div>
-                        <div class="solution">
-                            <h3>Fix</h3>
-                            <p>Build-time injection and CI secret scans.</p>
-                        </div>
-                    </div>
+                    <p><strong>Solution:</strong> Implemented emergency API key rotation, migrated to server-side proxy architecture, and established comprehensive security monitoring with real-time threat detection.</p>
                 </div>
-            </details>
-
-            <details class="collapsible" id="architecture">
-                <summary><h2>Architecture &amp; Diagrams</h2></summary>
-                <div class="diagram-group">
-                    <figure>
-                        <div class="mermaid" aria-label="Security Assessment Flow">
-                            flowchart TD
-                              A[Code & Config Review] --> B[Traffic Inspection / Proxy Logs]
-                              B --> C[Discovery: Hard-coded API Keys]
-                              B --> D[Discovery: Rate-limit Gaps]
-                              B --> E[Discovery: Cache Poisoning Risk]
-                              C --> F[Risk Rating & CVSS Estimation]
-                              D --> F
-                              E --> F
-                              F --> G[Remediation Plan]
-                              G --> H[Server-side API Proxy + WAF]
-                              G --> I[Secrets Management & Rotation]
-                              G --> J[Cache-Key Normalization Rules]
-                              G --> K[Rate Limiting & Bot Filters]
-                              H --> L[Validation: Pen-test Re-run]
-                              I --> L
-                              J --> L
-                              K --> L
-                              L --> M[Go-live (Blue/Green, Monitors)]
-                        </div>
-                        <img class="plantuml" src="https://www.plantuml.com/plantuml/png/VZLBbtswEETv_Io9FS1SIXcFKGLJtuzYLgQ5SM-MuFYIS1yDXDl1vj4rUgWa04DYx1nOgI-Btedx6BXTBZjglZhpAGM9tmzJqXC27qK9HuBVt-fO0-hMST15YK9dkBE6_o8Kb9rQu3UdnHQfUOULKMkgfBNxJ9tBg1eL7w8qL-DZ69PJtrAVn7QO7qH29PcGe-rCg1pAlv2CQhVRS8hhaUNLV_S3HDbam6wVbwOLegs7vIUZXH4FG82Y9XawDJW-_INWX6FSt28INdlAbnp9Y8NZlZFcCzkdJ6NpJFFejkdYBbaDjiUtE6dWs66jVtM9HNDYSEHda6eqONrI6IheVmfBSjtTgBT8Dv4s1jO1jVTrkQMctNOdmDmW_Q1xWpy4J5jfn0kJ8Jv8oHv7kZY2Y49h5naQyoD9VEaKUhDD2vaMPqhNpPZCvYiBiQY51OgyxsCSJfOjU9tEqadZd7Puox7kdkVS9xXhe9GPeF95RPcTDtIrkw8_1CM6I1_uEw.." alt="Security assessment flow diagram">
-                        <figcaption>Figure 1. Security Assessment Flow</figcaption>
-                    </figure>
-                    <figure>
-                        <div class="mermaid" aria-label="Secure Architecture">
-                            flowchart LR
-                              subgraph Client
-                                U[User Browser]
-                              end
-                              subgraph Edge
-                                WAF[WAF/Shield]
-                                CDN[CDN/Cache]
-                              end
-                              subgraph App
-                                SRV[Server-side Proxy]
-                                APP[Storefront App]
-                              end
-                              subgraph Secrets
-                                SM[Secrets Manager / KMS]
-                              end
-                              subgraph Vendors
-                                API1[Shopify/Rebuy API]
-                                API2[3rd-party Service]
-                              end
-                              U --> CDN --> WAF --> APP
-                              APP --> SRV
-                              SRV --> API1
-                              SRV --> API2
-                              SM --> SRV
-                              SM --> APP
-                              classDef warn fill:#4b5563,stroke:#9ca3af,color:#fff
-                              class SRV,SM warn
-                        </div>
-                        <img class="plantuml" src="https://www.plantuml.com/plantuml/png/bVJNa8JAEL3nVwz2LFKthYKIH60gxSIG7UE8rNlJshh3w-xaK6X_vbNr1CANhM28eTNv3mQH1glyh30RFZg6cAZIZbkDqQgTp4yO7E7pUpDYw1Yku4zMQcuxKQyBI6Etp1C7GsvmQpqj0hmkorAYlVwlMoTGuFDMbMBPBLBeWiQYkTnyuQFhYRn93qhvMsOK-DmctOJcYSEDjUOPjl8_WmOR5BhAjurVw7I8F3sLQmcFYzHSF1LTKokwJ_N9avjCeLGCXu8oSPf7d3xnCFMy2kFox-ThfF5XiTEhdPYfpYDDTGjmEbTgfRaf1WY3sVqjFWppqGq0jnNTqvTUWuD2cGLN6easPX302Q7JJq_ZncAbUglesm3uuIRms--XEU7eVDj92PyGb_Ybec9nnFvWgnbE811Js2vt7c9eTV5chIlHd7fi4Wnb7T53fMaQRKrQl0R0RMrohHdaYWl4ePIBr4Dv4B8." alt="Secure architecture diagram">
-                        <figcaption>Figure 2. Secure Architecture</figcaption>
-                    </figure>
-                    <figure>
-                        <div class="mermaid" aria-label="CI/CD Security Gates">
-                            flowchart TD
-                              A[Developer PR] --> B[Static Scan (SAST)]
-                              B --> C[Secrets Audit (pre-commit / CI)]
-                              C --> D[Infra as Code Scan (Terraform/WAF)]
-                              D --> E[DAST on Preview Env]
-                              E --> F[Security Review Gate]
-                              F --> G[Blue/Green Deploy]
-                              G --> H[Post-deploy Checks (WAF hits, 4xx/5xx, perf)]
-                        </div>
-                        <img class="plantuml" src="https://www.plantuml.com/plantuml/png/TZBBa8JAEIXv-RXvaMGQS3tRKNrYijcxQs_r7kSXJDthdqLx33epkfY2vO_xHvNWUY3o0LWZcg9lnFiVOzgvZNVzyGLjQ2_EdDgZ25yFh-BKblmgYkJMiIL-c8WLcXzz4YzatJGyxYau1HJPgv1hiTx_x6JSo96isiZgVq2r48syewCyQhqxHpxXzHqh3HLXpbtAuXu6dqEWAxNRsqMp5Ugipmbpiu_119O4SdHggL3Q1dMNn-H6VzSI1zsOD7I1ShP6aAcqtkIUsKG-5fuk7zlq7n4VlBeyTcQsdeHiNc7xOo7F2zjOkR6tU_-Kgkuz_gA." alt="CI/CD security gates diagram">
-                        <figcaption>Figure 3. CI/CD Security Gates</figcaption>
-                    </figure>
+                
+                <div class="finding-item">
+                    <h3>Rate Limiting Implementation</h3>
+                    <p><strong>Issue:</strong> Multiple API endpoints lacked request rate limiting, potentially allowing brute-force attacks and service disruption.</p>
+                    <p><strong>Solution:</strong> Implemented Negate security solution for DDoS protection and enhanced API rate limiting across all endpoints.</p>
                 </div>
-            </details>
 
-            <details class="collapsible" id="team">
-                <summary><h2>Team &amp; My Role</h2></summary>
-                <ul>
-                    <li>Security manager coordinated vendor penetration tests.</li>
-                    <li>External firm executed assessments and reporting.</li>
-                    <li><strong>My role:</strong> pen-test coordination, API proxy design, Terraform/WAF rule authoring, CI/CD hardening.</li>
-                </ul>
-            </details>
+                <div class="finding-item">
+                    <h3>File Upload Security</h3>
+                    <p><strong>Issue:</strong> Unrestricted file uploads posed potential security risks.</p>
+                    <p><strong>Solution:</strong> Implemented strict file type validation, limiting uploads to PDFs and images only.</p>
+                </div>
 
-            <details class="collapsible" id="outcomes">
-                <summary><h2>Outcomes</h2></summary>
-                <ul>
-                    <li>8+ vulnerabilities fixed across regions.</li>
-                    <li>Median response time improved 15% after cache tuning.</li>
-                    <li>0 incidents since deployment; 0 downtime during rollout.</li>
-                    <li>Before: exposed API key &amp; no WAF; After: rotated keys and rules in place.</li>
-                </ul>
-            </details>
+                <div class="finding-item">
+                    <h3>Email Bombing Prevention</h3>
+                    <p><strong>Issue:</strong> Vulnerability allowing unlimited email sending without authentication.</p>
+                    <p><strong>Solution:</strong> Implemented reCAPTCHA and IP-based rate limiting, coordinated with Secuvy for additional API security measures.</p>
+                </div>
 
-            <details class="collapsible" id="lessons">
-                <summary><h2>Lessons Learned &amp; Best Practices</h2></summary>
+                <div class="finding-item">
+                    <h3>Password Security</h3>
+                    <p><strong>Issue:</strong> Weak password requirements in user registration.</p>
+                    <p><strong>Solution:</strong> Enhanced frontend password validation and explored SSO integration options.</p>
+                </div>
+
+                <div class="finding-item">
+                    <h3>Anti-Clickjacking Measures</h3>
+                    <p><strong>Issue:</strong> Vulnerability to clickjacking attacks through iframe embedding.</p>
+                    <p><strong>Solution:</strong> Implemented frame-ancestors restriction in Content Security Policy.</p>
+                </div>
+            </div>
+
+            <div class="project-team">
+                <h2>Project Team</h2>
+                
+                <div class="team-section">
+                    <h3>Internal Team</h3>
+                    <ul>
+                        <li>
+                            <strong>Mason (Junkuk) Kim</strong>
+                            <span>Global DevOps Engineer</span>
+                            <p>Led technical implementation and vulnerability remediation</p>
+                        </li>
+                        <li>
+                            <strong>Giriraj "Giri" Sharma</strong>
+                            <span>Data Privacy & Cybersecurity Manager</span>
+                            <p>Overall project management and security coordination</p>
+                        </li>
+                        <li>
+                            <strong>Derek Choi</strong>
+                            <span>IT Infrastructure & Security Manager</span>
+                            <p>Team leader who managed the entire security project and coordinated all implementation phases</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="team-section">
+                    <h3>External Partners</h3>
+                    <ul>
+                        <li>
+                            <strong>Ebryx, LLC</strong>
+                            <p>Security assessment and penetration testing</p>
+                            <ul>
+                                <li>Syed Sherdil Hasan (Lead Security Engineer)</li>
+                                <li>Muhammad Umer Ishaq (Project Manager)</li>
+                                <li>Muhammad Anas (Security Engineer)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-results">
+                <h2>Current Status & Outcomes</h2>
                 <ul>
-                    <li>Aligned fixes with OWASP Top 10 categories.</li>
-                    <li>Key rotation policy and least-privilege access enforced.</li>
-                    <li>Mandatory PR checks guard operational guardrails.</li>
+                    <li>Successfully identified and categorized 8+ security vulnerabilities including critical API key exposure</li>
+                    <li>Discovered high-severity Rebuy API vulnerability (CVSS 7.5) through comprehensive security research</li>
+                    <li>Implemented immediate emergency response including API key rotation and server-side proxy architecture</li>
+                    <li>Established comprehensive security monitoring with real-time threat detection capabilities</li>
+                    <li>Enhanced security measures across multiple regional sites with multi-layered protection</li>
+                    <li>Coordinated responsible disclosure process with affected vendors and security teams</li>
+                    <li>Developed detailed security documentation and architectural diagrams for future reference</li>
                 </ul>
-            </details>
+            </div>
+
+            <div class="project-learnings">
+                <h2>Key Learnings & Best Practices</h2>
+                <ul>
+                    <li>Importance of thorough security testing before implementation</li>
+                    <li>Value of coordinated approach with third-party service providers</li>
+                    <li>Need for balance between security measures and platform limitations</li>
+                    <li>Benefits of regular security assessments and continuous monitoring</li>
+                </ul>
+            </div>
         </section>
     </main>
 
@@ -287,31 +234,5 @@
             <p>&copy; 2025 Mason Kim. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        const USE_PLANTUML = false; // set to true to use PlantUML server images
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script defer>
-        (function(){
-            const preferPlant = USE_PLANTUML;
-            if(preferPlant){
-                document.querySelectorAll('.mermaid').forEach(m=>m.remove());
-                document.querySelectorAll('.plantuml').forEach(img=>img.style.display='block');
-            } else if(window.mermaid){
-                mermaid.initialize({startOnLoad:true, theme:'dark'});
-            }
-            function toggleDetails(){
-                const open = window.innerWidth >= 1024;
-                document.querySelectorAll('details.collapsible').forEach(d=>{
-                    if(open) d.setAttribute('open','');
-                    else d.removeAttribute('open');
-                });
-            }
-            toggleDetails();
-            window.addEventListener('resize', toggleDetails);
-        })();
-    </script>
 </body>
-</html>
-
+</html> 
