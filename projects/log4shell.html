@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Log4Shell, Log4j, JNDI, Security Research, Java">
+    <title>Log4Shell Exploit Analysis - Mason Kim</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#experience">Experience</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>Log4Shell Exploit Analysis</h1>
+                <div class="project-meta">
+                    <span class="project-period">Security Research</span>
+                    <span class="project-status">Completed</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">Log4j</span>
+                    <span class="tech-tag">Exploit Research</span>
+                    <span class="tech-tag">Mitigation</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="project-content container">
+            <div class="project-overview">
+                <h2>Project Overview</h2>
+                <p>Recreated the CVE-2021-44228 "Log4Shell" vulnerability in a controlled environment to observe the full remote code execution chain. The study examined how JNDI lookups in Log4j enable attackers to trigger outbound connections and run arbitrary classes.</p>
+            </div>
+
+            <div class="project-environment">
+                <h2>Environment &amp; Tools</h2>
+                <ul>
+                    <li>Vulnerable Java application using Log4j 2.14.1</li>
+                    <li>Marshalsec LDAP server and Python HTTP server for payload delivery</li>
+                    <li>curl and custom scripts to inject <code>${jndi:}</code> payloads</li>
+                    <li>Wireshark and log monitoring to validate exploit execution</li>
+                </ul>
+            </div>
+
+            <div class="project-findings">
+                <h2>Key Experiments</h2>
+                <ul>
+                    <li>Demonstrated end-to-end exploitation from log injection to remote class loading.</li>
+                    <li>Crafted obfuscated payloads using lookup functions and encoding to bypass simple filters.</li>
+                    <li>Evaluated mitigations such as patched Log4j versions, <code>formatMsgNoLookups</code>, and network egress controls.</li>
+                </ul>
+            </div>
+
+            <div class="project-lessons">
+                <h2>Lessons Learned</h2>
+                <ul>
+                    <li>Logging features can become critical attack surfaces when misconfigured.</li>
+                    <li>Effective detection must normalize Log4j lookups to defeat evasion tricks.</li>
+                    <li>Layered defenses—patching, configuration hardening, and outbound filtering—provide the strongest protection.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Mason Kim. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
