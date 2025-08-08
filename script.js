@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initSmoothScroll();
     initActiveNavigation();
     sortProjects();
-    initSkillBars();
     initScrollAnimations();
 });
 
@@ -147,26 +146,6 @@ function initScrollAnimations() {
         el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         observer.observe(el);
     });
-}
-
-function initSkillBars() {
-    const skillsSection = document.getElementById('skills');
-    if (!skillsSection) return;
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const progresses = skillsSection.querySelectorAll('.skill-progress');
-                progresses.forEach(bar => {
-                    const value = bar.dataset.progress || 0;
-                    bar.style.width = value + '%';
-                });
-                observer.unobserve(skillsSection);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    observer.observe(skillsSection);
 }
 
 function sortProjects() {
