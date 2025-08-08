@@ -114,7 +114,88 @@
 
                         <div class="diagram-container">
                             <h5>Secure Architecture Implementation</h5>
-                            <img src="https://github.com/user-attachments/assets/27d23fbd-489d-4420-9f54-834725f5ba48" alt="Secure Architecture Implementation - Proposed solution architecture with server-side proxy and proper credential management" width="100%" style="max-width: 800px; height: auto;" />
+                            <pre class="mermaid" aria-label="Rebuy API Secure Data Flow Sequence">
+sequenceDiagram
+    title Rebuy API Secure Data Flow Sequence
+    actor User
+    participant Shopify as "Shopify Store (Frontend)"
+    participant Wonder as "Wonder Server (Proxy)"
+    participant Rebuy as "Rebuy API (External)"
+    participant Env as "Environment Variables"
+
+    %% Initialization
+    Note over User,Shopify: Initialization
+    User->>Shopify: Visit Product Page
+    activate Shopify
+
+    Shopify->>Shopify: Extract Product ID and User ID
+    Note right of Shopify: JavaScript extracts:\n- currentProductId\n- customerId
+
+    %% Secure API Request
+    Note over Shopify,Wonder: Secure API Request
+    Shopify->>Wonder: GET /api/rebuy-proxy?\nuserId=123&amp;productIds=456\n&amp;currency=USD&amp;limit=10
+    activate Wonder
+    Note right of Wonder: No API Key in request\nHTTPS encrypted
+
+    %% Security Validation
+    Note over Wonder: Security Validation
+    Wonder->>Wonder: CORS Validation
+    Note right of Wonder: Check Origin:\nwww.zinus.com ✅
+
+    Wonder->>Wonder: Rate Limiting Check
+    Note right of Wonder: IP: 192.168.1.1\nRequests: 15/100 ✅
+
+    Wonder->>Wonder: Input Validation
+    Note right of Wonder: userId: Valid ✅\nproductIds: Valid ✅\ncurrency: USD ✅
+
+    %% Secure External API Call
+    Note over Wonder,Rebuy: Secure External API Call
+    Wonder->>Env: Retrieve API Key
+    activate Env
+    Env-->>Wonder: REBUY_API_KEY 🔒
+    deactivate Env
+
+    Wonder->>Rebuy: GET /api/v1/custom/id/232697?\nkey=SECURE_API_KEY\n&amp;user_id=123&amp;product_ids=456
+    activate Rebuy
+    Note right of Rebuy: API Key from server only\nServer-to-server call
+
+    %% Data Processing
+    Note over Wonder: Data Processing
+    Rebuy-->>Wonder: Raw Recommendation Data
+    deactivate Rebuy
+    Note left of Wonder: Full API response with\ninternal metadata
+
+    Wonder->>Wonder: Data Sanitization
+    Note right of Wonder: Remove sensitive fields:\n- Internal IDs\n- Debug info\n- API metadata
+
+    Wonder->>Wonder: Response Caching
+    Note right of Wonder: Cache for 5 minutes\nto improve performance
+
+    %% Secure Response
+    Note over Wonder,Shopify: Secure Response
+    Wonder-->>Shopify: Sanitized JSON Response\n{\n  "products": [...],\n  "total_products": 10\n}
+    deactivate Wonder
+    Note left of Shopify: Clean data only\nNo sensitive info
+
+    %% UI Rendering
+    Note over User,Shopify: UI Rendering
+    Shopify->>Shopify: Render Recommendations
+    Shopify-->>User: Display Product Recommendations
+    deactivate Shopify
+
+    %% Error Handling (Alternative Flow)
+    alt Error Scenario
+        Wonder->>Wonder: Error Occurs
+        Note right of Wonder: Network timeout,\nAPI error, etc.
+
+        Wonder->>Wonder: Error Sanitization
+        Note right of Wonder: Remove sensitive details:\n- Stack traces\n- Internal paths\n- API keys
+
+        Wonder-->>Shopify: Safe Error Response\n{\n  "error": "Unable to fetch recommendations",\n  "timestamp": "2024-01-01T12:00:00Z"\n}
+        Shopify->>Shopify: Fallback UI
+        Note right of Shopify: Hide recommendation section\nor show default products
+    end
+                            </pre>
                             <p class="diagram-caption">Proposed secure architecture implementing server-side API proxy, environment-based credential management, and proper access controls.</p>
                         </div>
 
@@ -234,5 +315,9 @@
             <p>&copy; 2025 Mason Kim. All rights reserved.</p>
         </div>
     </footer>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
 </body>
-</html> 
+</html>
