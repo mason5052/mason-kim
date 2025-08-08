@@ -25,8 +25,12 @@ body {
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
     --accent-primary: #3b82f6;
+    --accent-primary-rgb: 59, 130, 246;
     --accent-secondary: #8b5cf6;
-    --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --accent-secondary-rgb: 139, 92, 246;
+    --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    --accent-success: #10b981;
+    --accent-success-rgb: 16, 185, 129;
     --border-color: #475569;
     --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -40,9 +44,13 @@ body {
     --text-primary: #1e293b;
     --text-secondary: #475569;
     --text-muted: #64748b;
-    --accent-primary: #3b82f6;
-    --accent-secondary: #8b5cf6;
-    --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --accent-primary: #2563eb;
+    --accent-primary-rgb: 37, 99, 235;
+    --accent-secondary: #7c3aed;
+    --accent-secondary-rgb: 124, 58, 237;
+    --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    --accent-success: #047857;
+    --accent-success-rgb: 4, 120, 87;
     --border-color: #e2e8f0;
     --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -199,7 +207,7 @@ body {
     position: absolute;
     width: 4px;
     height: 4px;
-    background: rgba(59, 130, 246, 0.3);
+    background: rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 50%;
     animation: float 10s infinite linear;
 }
@@ -228,7 +236,7 @@ body {
 .orb-1 {
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-primary-rgb), 0.3) 0%, transparent 70%);
     top: -150px;
     right: -150px;
     animation-delay: 0s;
@@ -237,7 +245,7 @@ body {
 .orb-2 {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-secondary-rgb), 0.2) 0%, transparent 70%);
     bottom: -200px;
     left: -200px;
     animation-delay: 2s;
@@ -279,7 +287,7 @@ body {
 
 .hero-greeting {
     font-size: 1.125rem;
-    color: #93c5fd;
+    color: var(--accent-primary);
     margin-bottom: 1rem;
     font-weight: 500;
 }
@@ -306,21 +314,21 @@ body {
 
 .hero-korean {
     font-size: 1.5rem;
-    color: #cbd5e1;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
     font-weight: 500;
 }
 
 .hero-title {
     font-size: 2rem;
-    color: #93c5fd;
+    color: var(--accent-primary);
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
 .hero-tagline {
     font-size: 1.25rem;
-    color: #cbd5e1;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
 }
 
@@ -341,17 +349,17 @@ body {
 
 .keyword {
     padding: 0.5rem 1rem;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 2rem;
-    color: #93c5fd;
+    color: var(--accent-primary);
     font-size: 0.875rem;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .keyword:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(var(--accent-primary-rgb), 0.2);
     transform: translateY(-2px);
 }
 
@@ -378,12 +386,12 @@ body {
 .btn-primary {
     background: var(--accent-gradient);
     color: white;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 14px rgba(var(--accent-primary-rgb), 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.4);
 }
 
 .btn-secondary {
@@ -412,12 +420,12 @@ body {
     position: relative;
     width: 300px;
     height: 300px;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.2), rgba(var(--accent-secondary-rgb), 0.2));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(59, 130, 246, 0.3);
+    border: 2px solid rgba(var(--accent-primary-rgb), 0.3);
     backdrop-filter: blur(10px);
     margin-bottom: 1rem;
     animation: pulse-ring 3s infinite;
@@ -425,13 +433,13 @@ body {
 
 @keyframes pulse-ring {
     0% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 0 0 rgba(var(--accent-primary-rgb), 0.4);
     }
     70% {
-        box-shadow: 0 0 0 20px rgba(59, 130, 246, 0);
+        box-shadow: 0 0 0 20px rgba(var(--accent-primary-rgb), 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        box-shadow: 0 0 0 0 rgba(var(--accent-primary-rgb), 0);
     }
 }
 
@@ -460,8 +468,8 @@ body {
     position: absolute;
     width: 40px;
     height: 40px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -481,7 +489,7 @@ body {
 }
 
 .avatar-info {
-    color: #cbd5e1;
+    color: var(--text-secondary);
 }
 
 .avatar-info p:first-child {
@@ -635,7 +643,7 @@ section {
 
 .interest-tags span {
     padding: 0.25rem 0.75rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(var(--accent-primary-rgb), 0.1);
     color: var(--accent-primary);
     border-radius: 1rem;
     font-size: 0.75rem;
@@ -679,12 +687,12 @@ section {
 
 .research-tags span {
     padding: 0.25rem 0.75rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(var(--accent-primary-rgb), 0.1);
     color: var(--accent-primary);
     border-radius: 1rem;
     font-size: 0.75rem;
     font-weight: 500;
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
 }
 
 /* Skills Section */
@@ -749,7 +757,7 @@ section {
 .skill-bar {
     flex: 1;
     height: 8px;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(var(--accent-primary-rgb), 0.1);
     border-radius: 4px;
     margin: 0 1rem;
     overflow: hidden;
@@ -829,7 +837,7 @@ section {
 }
 
 .timeline-period {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(var(--accent-primary-rgb), 0.1);
     color: var(--accent-primary);
     padding: 0.5rem 1rem;
     border-radius: 2rem;
@@ -911,8 +919,8 @@ section {
 }
 
 .project-card {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.05), rgba(var(--accent-secondary-rgb), 0.05));
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 1rem;
     padding: 2rem;
     animation: slideInUp 0.8s ease-out;
@@ -962,7 +970,7 @@ section {
 
 .achievements li::before {
     content: '•';
-    color: #10b981;
+    color: var(--accent-success);
     font-weight: bold;
     font-size: 1rem;
 }
@@ -976,8 +984,8 @@ section {
 
 .tech-tag {
     padding: 0.375rem 0.875rem;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(var(--accent-primary-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     color: var(--accent-primary);
     border-radius: 2rem;
     font-size: 0.75rem;
@@ -1013,7 +1021,7 @@ section {
     background: var(--accent-primary);
     color: white;
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.3);
 }
 
 .project-footer {
@@ -1059,7 +1067,7 @@ section {
     background: var(--accent-primary);
     color: white;
     transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px rgba(var(--accent-primary-rgb), 0.3);
 }
 
 /* Leadership */
@@ -1131,7 +1139,7 @@ section {
 
 .workshop-topics span {
     padding: 0.25rem 0.75rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(var(--accent-primary-rgb), 0.1);
     color: var(--accent-primary);
     border-radius: 1rem;
     font-size: 0.75rem;
@@ -1140,7 +1148,7 @@ section {
 
 /* Certifications Section */
 .certifications {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+    background: linear-gradient(135deg, rgba(var(--accent-secondary-rgb), 0.05), rgba(236, 72, 153, 0.05));
 }
 
 .cert-grid {
@@ -1230,8 +1238,8 @@ section {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: rgba(var(--accent-success-rgb), 0.1);
+    color: var(--accent-success);
     border-radius: 2rem;
     font-size: 0.875rem;
     font-weight: 600;
@@ -1244,8 +1252,8 @@ section {
 }
 
 .highlight-card {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.05), rgba(var(--accent-secondary-rgb), 0.05));
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 1rem;
     padding: 2rem;
     text-align: center;
@@ -1391,8 +1399,8 @@ section {
 }
 
 .cta-card {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.05), rgba(var(--accent-secondary-rgb), 0.05));
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
     border-radius: 1rem;
     padding: 3rem 2rem;
     max-width: 800px;
