@@ -13,8 +13,12 @@
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
             --accent-primary: #3b82f6;
+            --accent-primary-rgb: 59, 130, 246;
             --accent-secondary: #8b5cf6;
-            --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --accent-secondary-rgb: 139, 92, 246;
+            --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            --accent-success: #10b981;
+            --accent-success-rgb: 16, 185, 129;
             --border-color: #475569;
             --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
@@ -99,16 +103,16 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+            background: rgba(var(--accent-success-rgb), 0.1);
+            color: var(--accent-success);
             border-radius: 2rem;
             font-weight: 600;
             margin-top: 1rem;
         }
 
         .cert-verification {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: rgba(var(--accent-primary-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
             border-radius: 12px;
             padding: 2rem;
             text-align: center;
