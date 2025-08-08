@@ -207,7 +207,52 @@ sequenceDiagram
 
                         <div class="diagram-container">
                             <h5>Implementation Timeline & Phases</h5>
-                            <img src="https://github.com/user-attachments/assets/c4618b30-a45f-4bcf-b0e4-c974f99693af" alt="Implementation Timeline - Phased approach to remediation including emergency response, short-term fixes, and long-term improvements" width="100%" style="max-width: 800px; height: auto;" />
+                            <pre class="mermaid" aria-label="Implementation timeline security comparison">
+flowchart LR
+  %% Security Enhancement: Before vs After
+
+  subgraph Before["❌ BEFORE (Vulnerable)"]
+    direction TB
+    ShopifyBefore[Shopify Store]
+    JSBefore[Browser JavaScript]
+    RebuyBefore[Rebuy API]
+    BeforeAnchor(( )):::invisible
+
+    ShopifyBefore --> JSBefore
+    JSBefore -- Direct API Call; API Key in URL; Visible in DevTools; No Rate Limiting --> RebuyBefore
+
+    NoteJSBefore["🚨 API Key Exposed:\n497cd4712d15cfb2f8690d77b13f74779fbb6bf8"]:::note
+    JSBefore -.-> NoteJSBefore
+  end
+
+  subgraph After["✅ AFTER (Secure)"]
+    direction TB
+    ShopifyAfter[Shopify Store]
+    JSAfter[Browser JavaScript]
+    WonderAfter["Wonder Server\n(Proxy)"]
+    RebuyAfter[Rebuy API]
+    AfterAnchor(( )):::invisible
+
+    ShopifyAfter --> JSAfter
+    JSAfter -- Secure Proxy Call; No API Key; CORS Protected; Rate Limited --> WonderAfter
+    WonderAfter -- Server-to-Server; Secure API Key; Authenticated --> RebuyAfter
+
+    NoteJSAfter["✅ No API Key\n✅ Proxy Endpoint Only"]:::note
+    JSAfter -.-> NoteJSAfter
+
+    NoteWonderAfter["🔒 API Key in Environment\n🛡️ Security Middleware\n📊 Request Logging"]:::note
+    WonderAfter -.-> NoteWonderAfter
+  end
+
+  RiskBefore["🔴 CRITICAL RISKS:\n• API Key completely exposed\n• Unlimited API access\n• No request monitoring\n• Potential cost abuse\n• OWASP A02 violation"]:::note
+  RiskAfter["🟢 SECURITY BENEFITS:\n• API Key protected (100%)\n• Rate limiting enabled\n• Request monitoring\n• Cost control\n• OWASP compliance"]:::note
+
+  BeforeAnchor -.-> RiskBefore
+  AfterAnchor -.-> RiskAfter
+
+  classDef note fill:#fff7d6,stroke:#999,stroke-dasharray:3 3,color:#111;
+  classDef invisible fill:none,stroke:none;
+                            </pre>
                             <p class="diagram-caption">Strategic implementation roadmap showing emergency response actions, short-term security fixes, and long-term security infrastructure improvements.</p>
                         </div>
                     </div>
