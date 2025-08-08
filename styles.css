@@ -36,26 +36,6 @@ body {
     --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Light Theme Variables */
-.light-theme {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-card: #f1f5f9;
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-    --accent-primary: #2563eb;
-    --accent-primary-rgb: 37, 99, 235;
-    --accent-secondary: #7c3aed;
-    --accent-secondary-rgb: 124, 58, 237;
-    --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    --accent-success: #047857;
-    --accent-success-rgb: 4, 120, 87;
-    --border-color: #e2e8f0;
-    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
 body {
     background: var(--bg-primary);
     color: var(--text-primary);
@@ -149,22 +129,6 @@ body {
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
-}
-
-.theme-toggle {
-    background: none;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-}
-
-.theme-toggle:hover {
-    background: var(--bg-card);
-    transform: scale(1.05);
 }
 
 .nav-toggle {

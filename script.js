@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
-    initThemeToggle();
     initParticles();
     initSmoothScroll();
     initActiveNavigation();
@@ -29,25 +28,6 @@ function initNavigation() {
         if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
             navMenu.classList.remove('active');
             navToggle.classList.remove('active');
-        }
-    });
-}
-
-function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    const savedTheme = localStorage.getItem('theme') || 'dark-theme';
-    body.className = savedTheme;
-
-    themeToggle.addEventListener('click', () => {
-        if (body.classList.contains('dark-theme')) {
-            body.className = 'light-theme';
-            localStorage.setItem('theme', 'light-theme');
-            themeToggle.textContent = '🌙';
-        } else {
-            body.className = 'dark-theme';
-            localStorage.setItem('theme', 'dark-theme');
-            themeToggle.textContent = '🌓';
         }
     });
 }
