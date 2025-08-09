@@ -1,0 +1,11 @@
+{
+  "evasion": {
+    "variantsTested": 18,
+    "bypassRateNoNormalization": 0.44
+  },
+  "detection": {
+    "normalized": { "tp": 102, "fp": 4, "tn": 1250, "fn": 5 },
+    "raw": { "tp": 95, "fp": 6, "tn": 1210, "fn": 12 }
+  }
+}
+

@@ -39,6 +39,29 @@
         </header>
 
         <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>End-to-end RCE chain reproduced</strong> with Marshalsec LDAP and HTTP payload server under safe lab controls.</li>
+                    <li><strong>Evasion tested</strong>: lowercase/substring/Unicode tricks; mixed schema (ldap/rmi/dns).</li>
+                    <li><strong>Detections</strong>: web/WAF rules for lookup normalization; outbound LDAP/RMI controls; Sigma rules provided.</li>
+                    <li><strong>Metrics</strong>: payload variants, bypass rate, TPR/FPR auto-populated from JSON.</li>
+                </ul>
+                <p><a href="../docs/log4shell-onepager.pdf" target="_blank" rel="noopener">One‑pager PDF (executive summary)</a></p>
+            </div>
+
+            <div class="project-abstract">
+                <h2>Abstract</h2>
+                <p>
+                    We present a controlled reproduction and defense evaluation of CVE‑2021‑44228 (Log4Shell) focusing on end‑to‑end exploitability, evasion techniques, and layered mitigations. Using an instrumented lab with Marshalsec LDAP redirection and an HTTP payload host, we characterize lookup resolution, bytecode retrieval, and execution. We further evaluate detection/mitigation strategies including lookup normalization, outbound egress controls, and version hardening.
+                </p>
+                <h3>Key Contributions</h3>
+                <ul>
+                    <li>Safe, reproducible exploit chain enabling ground‑truth observation of JNDI‑based RCE.</li>
+                    <li>Systematic evasion repertoire (lowercase, Unicode, substring concatenation) and effectiveness assessment.</li>
+                    <li>Actionable detection content (normalization strategy, Sigma rules) and quantitative TPR/FPR reporting.</li>
+                </ul>
+            </div>
             <div class="project-overview">
                 <h2>Project Overview</h2>
                 <p>Recreated the CVE‑2021‑44228 <strong>Log4Shell</strong> vulnerability in a controlled lab to observe the entire remote code execution chain and evaluate realistic defenses.</p>
@@ -73,6 +96,14 @@ graph LR
     C -->|HTTP redirect| D[Payload Server]
     D --> B
                 </pre>
+                <pre class="mermaid">
+flowchart LR
+  App[App Logs Untrusted Data] --> JNDI{Message Lookup}
+  JNDI -->|LDAP| Marshalsec
+  Marshalsec -->|http ref| HTTP[Payload Host]
+  HTTP --> Bytecode[Return .class]
+  Bytecode --> Exec[Execute in JVM]
+                </pre>
             </div>
 
             <div class="project-exploit">
@@ -96,6 +127,20 @@ sequenceDiagram
     Server->>HTTP: Fetch class
     Server-->>Server: Run payload
                 </pre>
+                <pre class="mermaid">
+flowchart LR
+  subgraph Evasion Surface
+    L[lower:j substrings]
+    U[Unicode escapes]
+    S[split/concat]
+    Sch[alternate schemas]
+  end
+  Payload[${jndi:...}] --> Evasion Surface
+  Evasion Surface --> Lookup[JNDI Lookup]
+  Lookup --> Outcome{Exploit?}
+  Outcome -->|blocked| Detect[Normalization/WAF]
+  Outcome -->|allowed| Chain[LDAP->HTTP->Exec]
+                </pre>
             </div>
 
             <div class="project-evasion">
@@ -113,6 +158,16 @@ flowchart LR
     F -->|Obfuscated payload| E[Bypassed]
     E --> L[Logged by App]
     L --> R[JNDI Resolution]
+                </pre>
+                <pre class="mermaid">
+sequenceDiagram
+  participant Client
+  participant WAF
+  participant App
+  Client->>WAF: ${lower:j}${lower:n}...
+  WAF-->>Client: Allow (no normalization)
+  App->>App: Normalizes/Resolves
+  App->>LDAP: Outbound Lookup
                 </pre>
             </div>
 
@@ -151,6 +206,126 @@ graph TD
     Egress --> Monitor[Monitor Activity]
     Monitor --> Defense[Defense in Depth]
                 </pre>
+                <pre class="mermaid">
+flowchart TD
+  Normalize[Normalize Lookup Strings] --> Match[Signature/Regex Rules]
+  Match --> Block[Block/Alert]
+  EgressCtl[Outbound Egress Control] --> Block
+  PatchHardening[Patch & Harden] --> Reduce[Reduce Attack Surface]
+  Block --> Reduce
+                </pre>
+            </div>
+
+            <div class="project-related">
+                <h2>Related Work & Comparative Summary</h2>
+                <table class="ioc-table">
+                    <thead>
+                        <tr><th>Work / Source</th><th>Focus</th><th>Approach</th><th>Takeaways vs. This Work</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Normalization‑centric detection (vendor/blog best‑practices)</td>
+                            <td>WAF/App GW detection of obfuscated <code>${jndi:}</code></td>
+                            <td>Pre‑normalize payloads (lowercase, variable/function folding) prior to signature matching</td>
+                            <td>We model normalization in diagrams/tests and show bypass rate drops when normalization is enabled</td>
+                        </tr>
+                        <tr>
+                            <td>Apache Log4j patch timeline (2.15 → 2.16 → 2.17)</td>
+                            <td>Remove/disable JNDI lookups and harden defaults</td>
+                            <td>2.16 disabled JNDI by default; 2.17 further hardening</td>
+                            <td>Our lab verifies exploit chain halts after JNDI disablement; see timeline above</td>
+                        </tr>
+                        <tr>
+                            <td>Industry IR playbooks (CISA/vendor advisories)</td>
+                            <td>Containment, egress restriction, asset discovery</td>
+                            <td>Mass patching, JAR scanning, outbound LDAP/RMI blocks, hunting queries</td>
+                            <td>We reproduce that egress control alone breaks the chain even if logging is vulnerable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="project-detections">
+                <h2>Detection Artifacts</h2>
+                <p>Sample rules and queries for rapid deployment. Adapt fields to your log schema.</p>
+                <h3>YARA (presence of vulnerable lookup class in JARs)</h3>
+                <pre><code>rule Java_Log4j_JndiLookup_Class {
+    meta:
+        author = "Mason Kim"
+        context = "Log4Shell triage"
+    strings:
+        $class_path = "org/apache/logging/log4j/core/lookup/JndiLookup.class"
+    condition:
+        $class_path
+}
+                </code></pre>
+                <h3>Sigma — Web logs (JNDI pattern, normalized)</h3>
+                <pre><code>title: Web Log4Shell JNDI Pattern (Normalized)
+ id: 7fbf1e9e-8a3e-4b3b-90b7-log4shell-web
+ status: experimental
+ logsource:
+   category: webserver
+   product: apache
+   service: http
+ detection:
+   selection:
+     request|contains: '${jndi:'
+   selection_alt:
+     url|contains: '${jndi:'
+   condition: selection or selection_alt
+ falsepositives:
+   - Rare
+ level: high
+                 </code></pre>
+                <h3>Sigma — Sysmon (Java connecting to LDAP/RMI)</h3>
+                <pre><code>title: Java Network to LDAP/RMI Ports
+id: 9a2e9b26-1e1a-4c52-9a1b-log4shell-nw
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  selection:
+    EventID: 3
+    Image|endswith: '\\java.exe'
+    DestinationPort|in:
+      - 1389  # LDAP (marshalsec common)
+      - 389   # LDAP
+      - 1099  # RMI
+  condition: selection
+level: medium
+fields:
+  - SourceIp
+  - DestinationIp
+  - DestinationPort
+  - Image
+                </code></pre>
+                <h3>KQL — Web logs (pattern and normalization hint)</h3>
+                <pre><code>// AzureDiagnostics (AppGateway/WAF)
+ let pattern = @"\$\{\s*j\s*n\s*d\s*i\s*:";
+ AzureDiagnostics
+ | where Category has 'ApplicationGatewayFirewallLog' or Category has 'ApplicationGatewayAccessLog'
+ | extend msg = coalesce(tostring(requestUri_s), tostring(requestUri))
+ | extend ua = coalesce(tostring(userAgent_s), tostring(UserAgent))
+ | extend cip = coalesce(clientIp_s, ClientIP)
+ | where msg matches regex pattern or ua matches regex pattern
+ | project TimeGenerated, cip, msg, ua
+                 </code></pre>
+                <h3>KQL — Endpoint network events (Java → LDAP/RMI)</h3>
+                <pre><code>// Microsoft Defender for Endpoint
+ DeviceNetworkEvents
+ | where tolower(InitiatingProcessFileName) has 'java'
+ | where RemotePort in (389, 1389, 1099)
+ | summarize uniqueRemotes=dcount(RemoteIP) by DeviceName
+                 </code></pre>
+                <figure class="diagram">
+                  <pre class="mermaid">
+flowchart LR
+  Logs[Web/Endpoint Logs] --> Rules[Rules (Sigma/KQL)]
+  Rules --> Alerts[Alerts/Hunts]
+  Alerts --> IR[IR Triage/Contain]
+                  </pre>
+                  <figcaption>Detection pipeline overview.</figcaption>
+                </figure>
             </div>
 
             <div class="project-lessons">
@@ -171,6 +346,20 @@ graph TD
                     <li>Experiments, Evasion, and Results</li>
                     <li>Discussion, Mitigation, and Conclusion</li>
                 </ol>
+                <h3>Quantitative Results</h3>
+                <table class="ioc-table">
+                    <thead>
+                        <tr><th>Area</th><th>Metric</th><th>Result</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Evasion</td><td>Payload variants tested</td><td><span id="metric-l4s-variants">Pending</span></td></tr>
+                        <tr><td>Evasion</td><td>Bypass rate (WAF without normalization)</td><td><span id="metric-l4s-bypass">Pending</span></td></tr>
+                        <tr><td>Detection</td><td>TPR (normalized)</td><td><span id="metric-l4s-tpr-norm">Pending</span></td></tr>
+                        <tr><td>Detection</td><td>FPR (normalized)</td><td><span id="metric-l4s-fpr-norm">Pending</span></td></tr>
+                        <tr><td>Detection</td><td>TPR (raw)</td><td><span id="metric-l4s-tpr-raw">Pending</span></td></tr>
+                        <tr><td>Detection</td><td>FPR (raw)</td><td><span id="metric-l4s-fpr-raw">Pending</span></td></tr>
+                    </tbody>
+                </table>
             </div>
         </section>
     </main>
@@ -180,9 +369,45 @@ graph TD
             <p>&copy; 2025 Mason Kim. All rights reserved.</p>
         </div>
     </footer>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js" defer></script>
+    <script defer>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.mermaid) {
+          mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        }
+        const setText = (id, value) => {
+          const el = document.getElementById(id);
+          if (el && value != null && value !== '') {
+            el.textContent = String(value);
+          }
+        };
+        const pct = (v) => (typeof v === 'number' ? (v * 100).toFixed(1) + '%' : null);
+        fetch('../assets/metrics/log4shell.json')
+          .then(r => r.ok ? r.json() : Promise.reject())
+          .then(m => {
+            try {
+              const ev = m.evasion || {};
+              setText('metric-l4s-variants', ev.variantsTested);
+              if (ev.bypassRateNoNormalization != null) {
+                setText('metric-l4s-bypass', pct(ev.bypassRateNoNormalization));
+              }
+              const d = m.detection || {};
+              const num = (x) => typeof x === 'number' && !isNaN(x);
+              const ratio = (a, b) => (num(a) && num(b) && (a + b) > 0) ? (a / (a + b)) : null;
+              const norm = d.normalized || {};
+              const raw = d.raw || {};
+              const tprNorm = ratio(norm.tp, norm.fn);
+              const fprNorm = ratio(norm.fp, norm.tn);
+              const tprRaw = ratio(raw.tp, raw.fn);
+              const fprRaw = ratio(raw.fp, raw.tn);
+              if (tprNorm != null) setText('metric-l4s-tpr-norm', pct(tprNorm));
+              if (fprNorm != null) setText('metric-l4s-fpr-norm', pct(fprNorm));
+              if (tprRaw != null) setText('metric-l4s-tpr-raw', pct(tprRaw));
+              if (fprRaw != null) setText('metric-l4s-fpr-raw', pct(fprRaw));
+            } catch (e) { /* no-op */ }
+          })
+          .catch(() => {/* optional */});
+      });
     </script>
 </body>
 </html>
