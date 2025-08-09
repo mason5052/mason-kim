@@ -154,19 +154,24 @@ function initProjectFilters() {
     const endInput = document.getElementById('filter-end');
     const clearBtn = document.getElementById('filter-clear');
 
-    // Build category options from tags
+    // Build category options from tags (dedupe, case-insensitive)
     const categorySet = new Set();
     cards.forEach(card => {
         card.querySelectorAll('.tech-tag').forEach(tag => {
-            const v = tag.textContent.trim();
-            if (v) categorySet.add(v);
+            const raw = tag.textContent.trim();
+            if (!raw) return;
+            // Preserve label for display, standardize value in map
+            const key = raw.toLowerCase();
+            if (!Array.from(categorySet).some(x => x.key === key)) {
+                categorySet.add({ key, label: raw });
+            }
         });
     });
-    const categories = Array.from(categorySet).sort();
+    const categories = Array.from(categorySet).sort((a,b) => a.label.localeCompare(b.label));
     categories.forEach(cat => {
         const opt = document.createElement('option');
-        opt.value = cat.toLowerCase();
-        opt.textContent = cat;
+        opt.value = cat.key;
+        opt.textContent = cat.label;
         categorySelect.appendChild(opt);
     });
 
@@ -241,6 +246,12 @@ function initProjectFilters() {
             );
             card.style.display = matches ? '' : 'none';
         });
+
+        const emptyEl = document.getElementById('projects-empty');
+        if (emptyEl) {
+            const anyVisible = cards.some(c => c.style.display !== 'none');
+            emptyEl.style.display = anyVisible ? 'none' : 'block';
+        }
     }
 
     searchInput.addEventListener('input', applyFilters);
