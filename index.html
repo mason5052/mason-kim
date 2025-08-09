@@ -109,8 +109,44 @@
                 <h2 class="section-title">Projects</h2>
                 <p class="section-subtitle">Selected work demonstrating my DevSecOps skills.</p>
             </div>
+            <!-- Filters -->
+            <div class="filters-bar" id="projects-filters">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="project-search">Search</label>
+                        <input type="text" id="project-search" class="search-input" placeholder="Search projects (title, description, tags)" aria-label="Search projects" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-category">Category</label>
+                        <select id="filter-category">
+                            <option value="all" selected>All</option>
+                            <!-- options populated dynamically from tags -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-status">Status</label>
+                        <select id="filter-status">
+                            <option value="all" selected>All</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-start">From (month)</label>
+                        <input type="month" id="filter-start" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-end">To (month)</label>
+                        <input type="month" id="filter-end" />
+                    </div>
+                    <div class="filter-group">
+                        <label>&nbsp;</label>
+                        <button id="filter-clear" class="btn btn-secondary" type="button">Clear</button>
+                    </div>
+                </div>
+            </div>
             <div class="projects-grid" id="projects-container">
-                <div class="project-card" data-weight="20" onclick="window.location.href='projects/log4shell.html'">
+                <div class="project-card" data-weight="20" data-status="completed" onclick="window.location.href='projects/log4shell.html'">
                     <div class="project-header">
                         <h3>Log4Shell Exploit Analysis</h3>
                         <span class="project-period">Security Research</span>
@@ -127,7 +163,7 @@
                         <span class="view-details">View Details →</span>
                     </div>
                 </div>
-                <div class="project-card" data-weight="8" onclick="window.location.href='projects/security-enhancement.html'">
+                <div class="project-card" data-weight="8" data-status="ongoing" data-start="2025-01" onclick="window.location.href='projects/security-enhancement.html'">
                     <div class="project-header">
                         <h3>E-commerce Security Enhancement</h3>
                         <span class="project-period">Jan 2025 - Present</span>
@@ -154,7 +190,7 @@
                         <span class="view-details">View Details →</span>
                     </div>
                 </div>
-                <div class="project-card" data-weight="10" onclick="window.location.href='projects/malware-analysis.html'">
+                <div class="project-card" data-weight="10" data-status="completed" onclick="window.location.href='projects/malware-analysis.html'">
                     <div class="project-header">
                         <h3>Malware Analysis</h3>
                         <span class="project-period">CS 6262 – Project 2</span>

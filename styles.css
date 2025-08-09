@@ -964,6 +964,42 @@ section {
     margin-top: 3rem;
 }
 
+/* Filters Bar */
+.filters-bar {
+    margin: 1rem 0 2rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 1rem;
+}
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+.filter-group { display: flex; flex-direction: column; }
+.filter-group label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+.filters-bar input[type="text"],
+.filters-bar input[type="month"],
+.filters-bar select {
+    background: rgba(0,0,0,0.2);
+    color: #e7eaf0;
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.5rem 0.6rem;
+    border-radius: 8px;
+}
+.filters-bar .btn { width: 100%; }
+@media (max-width: 960px) {
+  .filters-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .filters-grid { grid-template-columns: 1fr; }
+}
+
 .project-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);

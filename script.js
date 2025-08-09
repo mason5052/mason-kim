@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initActiveNavigation();
     sortProjects();
     initScrollAnimations();
+    initProjectFilters();
 });
 
 function initNavigation() {
@@ -138,6 +139,125 @@ function sortProjects() {
         return weightB - weightA;
     });
     cards.forEach(card => container.appendChild(card));
+}
+
+function initProjectFilters() {
+    const container = document.getElementById('projects-container');
+    const filtersBar = document.getElementById('projects-filters');
+    if (!container || !filtersBar) return;
+
+    const cards = Array.from(container.querySelectorAll('.project-card'));
+    const searchInput = document.getElementById('project-search');
+    const categorySelect = document.getElementById('filter-category');
+    const statusSelect = document.getElementById('filter-status');
+    const startInput = document.getElementById('filter-start');
+    const endInput = document.getElementById('filter-end');
+    const clearBtn = document.getElementById('filter-clear');
+
+    // Build category options from tags
+    const categorySet = new Set();
+    cards.forEach(card => {
+        card.querySelectorAll('.tech-tag').forEach(tag => {
+            const v = tag.textContent.trim();
+            if (v) categorySet.add(v);
+        });
+    });
+    const categories = Array.from(categorySet).sort();
+    categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.toLowerCase();
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
+    });
+
+    function normal(text) {
+        return (text || '').toLowerCase();
+    }
+
+    function matchSearch(card, q) {
+        if (!q) return true;
+        const title = normal(card.querySelector('.project-header h3')?.textContent);
+        const desc = normal(card.querySelector('.project-description')?.textContent);
+        const tags = Array.from(card.querySelectorAll('.tech-tag')).map(t => normal(t.textContent)).join(' ');
+        return [title, desc, tags].some(s => s.includes(q));
+    }
+
+    function matchCategory(card, catVal) {
+        if (!catVal || catVal === 'all') return true;
+        const tags = Array.from(card.querySelectorAll('.tech-tag')).map(t => normal(t.textContent));
+        return tags.includes(catVal);
+    }
+
+    function matchStatus(card, statusVal) {
+        if (!statusVal || statusVal === 'all') return true;
+        const status = normal(card.dataset.status);
+        return status === statusVal;
+    }
+
+    function monthToNum(v) {
+        // v like YYYY-MM
+        if (!v) return null;
+        const [y, m] = v.split('-').map(n => parseInt(n, 10));
+        if (!y || !m) return null;
+        return y * 12 + (m - 1);
+    }
+
+    function cardStartMonth(card) {
+        // Prefer data-start; fallback by parsing .project-period text when possible
+        const ds = card.dataset.start;
+        if (ds) return monthToNum(ds);
+        const periodText = card.querySelector('.project-period')?.textContent || '';
+        // Try parse patterns like 'Jan 2025 - Present' or single year/month in text
+        const m = periodText.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})/i);
+        if (m) {
+            const map = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+            return (parseInt(m[2],10) * 12) + (map[m[1].toLowerCase()] - 1);
+        }
+        const y = periodText.match(/(\d{4})/);
+        if (y) return parseInt(y[1], 10) * 12; // assume January
+        return null;
+    }
+
+    function applyFilters() {
+        const q = normal(searchInput.value);
+        const catVal = categorySelect.value;
+        const statusVal = statusSelect.value;
+        const from = monthToNum(startInput.value);
+        const to = monthToNum(endInput.value);
+
+        cards.forEach(card => {
+            const matches = (
+                matchSearch(card, q) &&
+                matchCategory(card, catVal) &&
+                matchStatus(card, statusVal) &&
+                (function() {
+                    if (from == null && to == null) return true;
+                    const startNum = cardStartMonth(card);
+                    if (startNum == null) return false;
+                    if (from != null && startNum < from) return false;
+                    if (to != null && startNum > to) return false;
+                    return true;
+                })()
+            );
+            card.style.display = matches ? '' : 'none';
+        });
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    categorySelect.addEventListener('change', applyFilters);
+    statusSelect.addEventListener('change', applyFilters);
+    startInput.addEventListener('change', applyFilters);
+    endInput.addEventListener('change', applyFilters);
+    clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        categorySelect.value = 'all';
+        statusSelect.value = 'all';
+        startInput.value = '';
+        endInput.value = '';
+        applyFilters();
+    });
+
+    applyFilters();
 }
 
 if ('serviceWorker' in navigator) {
