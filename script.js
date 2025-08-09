@@ -167,22 +167,23 @@ function initProjectFilters() {
             }
         });
     });
-    const categories = Array.from(categorySet).sort((a,b) => a.label.localeCompare(b.label));
-    categories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.key;
-        opt.textContent = cat.label;
-        categorySelect.appendChild(opt);
-    });
-
-    function normal(text) {
-        return (text || '').toLowerCase();
+    if (categorySelect) {
+        const categories = Array.from(categorySet).sort((a,b) => a.label.localeCompare(b.label));
+        categories.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat.key;
+            opt.textContent = cat.label;
+            categorySelect.appendChild(opt);
+        });
     }
+
+    function textOf(el) { return el ? (el.textContent || '') : ''; }
+    function normal(text) { return (text || '').toLowerCase(); }
 
     function matchSearch(card, q) {
         if (!q) return true;
-        const title = normal(card.querySelector('.project-header h3')?.textContent);
-        const desc = normal(card.querySelector('.project-description')?.textContent);
+        const title = normal(textOf(card.querySelector('.project-header h3')));
+        const desc = normal(textOf(card.querySelector('.project-description')));
         const tags = Array.from(card.querySelectorAll('.tech-tag')).map(t => normal(t.textContent)).join(' ');
         return [title, desc, tags].some(s => s.includes(q));
     }
@@ -211,7 +212,7 @@ function initProjectFilters() {
         // Prefer data-start; fallback by parsing .project-period text when possible
         const ds = card.dataset.start;
         if (ds) return monthToNum(ds);
-        const periodText = card.querySelector('.project-period')?.textContent || '';
+        const periodText = textOf(card.querySelector('.project-period')) || '';
         // Try parse patterns like 'Jan 2025 - Present' or single year/month in text
         const m = periodText.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})/i);
         if (m) {
@@ -254,19 +255,22 @@ function initProjectFilters() {
         }
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    categorySelect.addEventListener('change', applyFilters);
-    statusSelect.addEventListener('change', applyFilters);
-    startInput.addEventListener('change', applyFilters);
-    endInput.addEventListener('change', applyFilters);
-    clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        categorySelect.value = 'all';
-        statusSelect.value = 'all';
-        startInput.value = '';
-        endInput.value = '';
-        applyFilters();
-    });
+    // Attach listeners (null‑safe)
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+    if (categorySelect) categorySelect.addEventListener('change', applyFilters);
+    if (statusSelect) statusSelect.addEventListener('change', applyFilters);
+    if (startInput) startInput.addEventListener('change', applyFilters);
+    if (endInput) endInput.addEventListener('change', applyFilters);
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if (searchInput) searchInput.value = '';
+            if (categorySelect) categorySelect.value = 'all';
+            if (statusSelect) statusSelect.value = 'all';
+            if (startInput) startInput.value = '';
+            if (endInput) endInput.value = '';
+            applyFilters();
+        });
+    }
 
     applyFilters();
 }

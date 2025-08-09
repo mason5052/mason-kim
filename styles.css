@@ -991,6 +991,7 @@ section {
     border: 1px solid rgba(255,255,255,0.12);
     padding: 0.5rem 0.6rem;
     border-radius: 8px;
+    outline: none;
 }
 .filters-bar .btn { width: 100%; }
 @media (max-width: 960px) {
