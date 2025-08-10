@@ -128,19 +128,19 @@ sequenceDiagram
     Server-->>Server: Run payload
                 </pre>
                 <pre class="mermaid">
-                flowchart LR
-                subgraph Evasion_Surface
-                  ES["Evasion Surface"]
-                  L[lower:j substrings]
-                  U[Unicode escapes]
-                  S[split/concat]
-                  Sch[alternate schemas]
-                end
-                Payload["JNDI payload sample"] --> ES
-                ES --> Lookup["JNDI Lookup"]
-                Lookup --> Outcome{"Exploit?"}
-                Outcome -->|blocked| Detect["Normalization/WAF"]
-                Outcome -->|allowed| Chain["LDAP->HTTP->Exec"]
+flowchart LR
+  subgraph Evasion_Surface
+    ES["Evasion Surface"]
+    L[lower:j substrings]
+    U[Unicode escapes]
+    S[split/concat]
+    Sch[alternate schemas]
+  end
+  Payload["JNDI payload sample"] --> ES
+  ES --> Lookup["JNDI Lookup"]
+  Lookup --> Outcome{"Exploit?"}
+  Outcome -->|blocked| Detect["Normalization and WAF"]
+  Outcome -->|allowed| Chain["LDAP to HTTP to Exec"]
                 </pre>
             </div>
 
@@ -321,9 +321,9 @@ fields:
                 <figure class="diagram">
                   <pre class="mermaid">
 flowchart LR
-  Logs[Web/Endpoint Logs] --> Rules[Rules (Sigma/KQL)]
-  Rules --> Alerts[Alerts/Hunts]
-  Alerts --> IR[IR Triage/Contain]
+  Logs["Web and Endpoint Logs"] --> Rules["Rules (Sigma or KQL)"]
+  Rules --> Alerts["Alerts and Hunts"]
+  Alerts --> IR["IR Triage and Containment"]
                   </pre>
                   <figcaption>Detection pipeline overview.</figcaption>
                 </figure>
