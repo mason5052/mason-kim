@@ -35,6 +35,7 @@ function initNavigation() {
 
 function initParticles() {
     const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return; // container removed
     const particleCount = 50;
 
     function createParticle() {

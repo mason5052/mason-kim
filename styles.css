@@ -1001,6 +1001,40 @@ section {
   .filters-grid { grid-template-columns: 1fr; }
 }
 
+/* Mobile-friendly sizing for Projects section */
+@media (max-width: 520px) {
+  /* Filters: bigger touch targets and text */
+  .filters-bar { padding: 1rem; }
+  .filter-group label { font-size: 0.95rem; }
+  .filters-bar input[type="text"],
+  .filters-bar input[type="month"],
+  .filters-bar select {
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+    min-height: 44px;
+  }
+  .filters-bar .btn {
+    font-size: 1rem;
+    padding: 0.9rem 1rem;
+    min-height: 44px;
+  }
+
+  /* Project cards: increase readability */
+  #projects .projects-grid { gap: 1.25rem; }
+  #projects .project-card { padding: 1.5rem; }
+  #projects .project-header h3 { font-size: 1.75rem; line-height: 1.2; }
+  #projects .project-period { font-size: 0.95rem; }
+  #projects .project-description { font-size: 1rem; line-height: 1.7; }
+  #projects .tech-tag { font-size: 0.9rem; padding: 0.5rem 1rem; }
+  #projects .view-details { font-size: 1rem; padding: 0.9rem 1.25rem; }
+}
+
+/* Smaller phones */
+@media (max-width: 400px) {
+  #projects .project-header h3 { font-size: 1.6rem; }
+  #projects .project-card { padding: 1.25rem; }
+}
+
 .project-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
