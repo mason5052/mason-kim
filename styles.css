@@ -1798,3 +1798,112 @@ section {
 html {
     scroll-padding-top: 90px;
 } 
+
+/* About Section */
+.about {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 0 60px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.about-content {
+        text-align: center;
+}
+
+.about-text h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+}
+
+.about-role {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+}
+
+.about-description {
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+}
+
+.about-highlights {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+}
+
+.highlight-item {
+        text-align: center;
+}
+
+.highlight-value {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-primary);
+}
+
+.highlight-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+}
+
+.about-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+}
+
+.about-links .btn {
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+}
+
+.about-links .btn-primary {
+        background: var(--accent-gradient);
+        color: white;
+}
+
+.about-links .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(var(--accent-primary-rgb), 0.3);
+}
+
+.about-links .btn-secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+}
+
+.about-links .btn-secondary:hover {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+        .about-text h1 {
+                    font-size: 2rem;
+        }
+
+    .about-highlights {
+                gap: 1.5rem;
+    }
+
+    .highlight-value {
+                font-size: 1.5rem;
+    }
+}
