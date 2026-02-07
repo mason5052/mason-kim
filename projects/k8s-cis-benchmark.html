@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Security Hardening: CIS Benchmark Guide - Mason Kim</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>Kubernetes Security Hardening: CIS Benchmark Guide</h1>
+                <div class="project-meta">
+                    <span class="project-period">February 2026</span>
+                    <span class="project-status">Published</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Kubernetes</span>
+                    <span class="tech-tag">CIS Benchmark</span>
+                    <span class="tech-tag">Security</span>
+                    <span class="tech-tag">DevSecOps</span>
+                </div>
+            </div>
+        </header>
+        <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>43 production workloads</strong> secured with 99.9%+ availability</li>
+                    <li><strong>CIS Kubernetes Benchmark v1.8.0</strong> comprehensive coverage</li>
+                    <li><strong>Ready-to-use templates</strong>: RBAC, network policies, pod security</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/k8s-security-baseline" target="_blank">View Repository on GitHub</a></p>
+            </div>
+            <div class="project-abstract">
+                <h2>Introduction</h2>
+                <p>Kubernetes security complexity requires structured guidance. The CIS Kubernetes Benchmark provides comprehensive recommendations for securing clusters. This guide distills production experience into actionable configurations.</p>
+            </div>
+            <div class="project-overview">
+                <h2>Why CIS Benchmark Matters</h2>
+                <ul>
+                    <li>Reduced attack surface by up to 60%</li>
+                    <li>Faster compliance audits (SOC 2, PCI-DSS, HIPAA)</li>
+                    <li>Decreased incident response time</li>
+                </ul>
+            </div>
+            <div class="project-background">
+                <h2>CIS Benchmark Structure</h2>
+                <table class="ioc-table">
+                    <thead><tr><th>Section</th><th>Focus Area</th></tr></thead>
+                    <tbody>
+                        <tr><td>1. Control Plane</td><td>API Server, Controller Manager, Scheduler</td></tr>
+                        <tr><td>2. etcd</td><td>Cluster data store security</td></tr>
+                        <tr><td>3. Worker Nodes</td><td>Kubelet and Kube-Proxy security</td></tr>
+                        <tr><td>4. Policies</td><td>RBAC, Pod Security, Network Policies</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="project-environment">
+                <h2>API Server Hardening</h2>
+                <pre><code># Disable anonymous authentication
+--anonymous-auth=false
+# Enable RBAC authorization
+--authorization-mode=Node,RBAC
+# Enable audit logging
+--audit-log-path=/var/log/kubernetes/audit.log</code></pre>
+            </div>
+            <div class="project-exploit">
+                <h2>RBAC Best Practices</h2>
+                <ul>
+                    <li>Never bind cluster-admin to service accounts</li>
+                    <li>Avoid wildcard permissions</li>
+                    <li>Create dedicated service accounts per application</li>
+                    <li>Scope to namespace when possible</li>
+                </ul>
+            </div>
+            <div class="project-evasion">
+                <h2>Network Policy Strategy</h2>
+                <pre><code># Default deny all traffic
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress</code></pre>
+            </div>
+            <div class="project-lessons">
+                <h2>Production Lessons</h2>
+                <ul>
+                    <li>Start with audit mode before enforce</li>
+                    <li>Document exceptions and review regularly</li>
+                    <li>Automate compliance with kube-bench in CI/CD</li>
+                    <li>Layer defenses: RBAC + Network Policies + PSS</li>
+                </ul>
+            </div>
+            <div class="project-report">
+                <h2>Resources</h2>
+                <ul>
+                    <li><a href="https://github.com/mason5052/k8s-security-baseline">k8s-security-baseline Repository</a></li>
+                    <li><a href="https://www.cisecurity.org/benchmark/kubernetes">CIS Kubernetes Benchmark</a></li>
+                    <li><a href="https://github.com/aquasecurity/kube-bench">kube-bench</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container"><p>2026 Mason Kim. All rights reserved.</p></div>
+    </footer>
+</body>
+</html>
