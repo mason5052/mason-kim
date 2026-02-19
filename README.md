@@ -18,9 +18,11 @@ This portfolio showcases my research and engineering projects in:
 
 | Project | Category | Description |
 |---------|----------|-------------|
+| [Kubernetes Security Baseline](https://github.com/mason5052/k8s-security-baseline) | DevSecOps | CIS Benchmark v1.8.0 hardening framework with audit automation and SOC 2 mapping |
+| [AWS WAF Security Framework](https://github.com/mason5052/aws-waf-security-framework) | Cloud Security | Production Terraform IaC for WAF with bot control, rate limiting, geo-blocking |
 | Log4Shell Exploit Analysis | Security Research | CVE-2021-44228 vulnerability reproduction and analysis |
-| Malware Analysis | Reverse Engineering | Static and dynamic analysis techniques for IOC extraction |
 | E-commerce Security Enhancement | DevSecOps | Multi-layer security implementation for global platform |
+| Malware Analysis | Reverse Engineering | Static and dynamic analysis techniques for IOC extraction |
 
 ## Tech Stack
 
