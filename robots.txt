@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mason5052.github.io/mason-kim/sitemap.xml
