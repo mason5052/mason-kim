@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commerce Abuse Defense (CAD) - Mason Kim</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>Commerce Abuse Defense (CAD)</h1>
+                <div class="project-meta">
+                    <span class="project-period">February 2026 - Present</span>
+                    <span class="project-status">Active Development</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">eCommerce Security</span>
+                    <span class="tech-tag">Bot Defense</span>
+                    <span class="tech-tag">AWS WAF</span>
+                    <span class="tech-tag">Cloudflare</span>
+                    <span class="tech-tag">Shopify</span>
+                </div>
+            </div>
+        </header>
+        <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>Open-source</strong> eCommerce abuse detection and scoring tool</li>
+                    <li><strong>6 detection rules</strong> producing a weighted Abuse Score (0-100)</li>
+                    <li><strong>Auto-generates WAF rules</strong> for Cloudflare and AWS WAF v2</li>
+                    <li><strong>Continuous monitoring</strong> with threshold alerts and CSV logging</li>
+                    <li><strong>2 attack chain analyses</strong> documenting real-world attack patterns</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/commerce-abuse-defense" target="_blank">View Repository on GitHub</a></p>
+            </div>
+            <div class="project-abstract">
+                <h2>The Problem</h2>
+                <p>eCommerce platforms face constant automated attacks: card-testing bots validate stolen credit cards through checkout flows, scraper bots from datacenter ASNs pollute analytics, and hidden product exploits target $0/warranty products via direct URL. Existing defenses (Shopify native fraud tools, third-party bot mitigation) provide per-order risk scores but lack <strong>aggregate abuse pressure measurement</strong>.</p>
+                <p>CAD fills this gap by computing an Abuse Score (0-100) from multiple data sources, then auto-generating deployable WAF rules from the analysis.</p>
+            </div>
+            <div class="project-overview">
+                <h2>Architecture</h2>
+                <pre><code>Data Sources          Collectors         Detectors          Scoring         Output
++-----------+       +------------+     +------------+    +---------+     +----------+
+| Shopify   |------&gt;| Shopify    |--+  | High Freq  |    |         |     | Reports  |
+| Admin API |       | Collector  |  |  | Hidden Prod|    |         |     | WAF Rules|
++-----------+       +------------+  |  | Pay Fail   |---&gt;| Scoring |----&gt;| Alerts   |
+                                    |  | Session Exp|    | Engine  |     +----------+
++-----------+       +------------+  |  | Anom Agent |    |         |
+| Cloudflare|------&gt;| Cloudflare |--+-&gt;| Geo Conc   |    +---------+
+| Analytics |       | Collector  |
++-----------+       +------------+</code></pre>
+            </div>
+            <div class="project-background">
+                <h2>Detection Rules</h2>
+                <table class="ioc-table">
+                    <thead><tr><th>Rule</th><th>ID</th><th>Signal</th><th>Severity</th></tr></thead>
+                    <tbody>
+                        <tr><td>High-Frequency Requests</td><td>CAD-001</td><td>&gt;N events from same IP in M minutes</td><td>HIGH</td></tr>
+                        <tr><td>Hidden Product Targeting</td><td>CAD-002</td><td>Direct access to $0/warranty products</td><td>HIGH</td></tr>
+                        <tr><td>Payment Failure Spike</td><td>CAD-003</td><td>Failure rate above baseline (card-testing)</td><td>CRITICAL</td></tr>
+                        <tr><td>Session Explosion</td><td>CAD-004</td><td>Sudden increase in unique sessions</td><td>MEDIUM</td></tr>
+                        <tr><td>Anomalous User-Agent</td><td>CAD-005</td><td>Bot UAs, headless browsers, missing UA</td><td>MEDIUM</td></tr>
+                        <tr><td>Geo/ASN Concentration</td><td>CAD-006</td><td>Datacenter ASN traffic patterns</td><td>LOW-MEDIUM</td></tr>
+                    </tbody>
+                </table>
+                <p>Each rule produces results with severity and confidence scores. The scoring engine applies configurable weights per category to compute a composite Abuse Score.</p>
+            </div>
+            <div class="project-exploit">
+                <h2>Guardrail Generator</h2>
+                <p>CAD converts abuse analysis into deployable WAF rules for both <strong>Cloudflare</strong> and <strong>AWS WAF v2</strong>:</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Threat Severity</th><th>Action</th></tr></thead>
+                    <tbody>
+                        <tr><td>CRITICAL (confirmed attacker IPs)</td><td>Block</td></tr>
+                        <tr><td>HIGH (bot user-agents)</td><td>Managed Challenge / CAPTCHA</td></tr>
+                        <tr><td>MEDIUM (datacenter ASN + checkout)</td><td>JS Challenge / Count</td></tr>
+                        <tr><td>LOW</td><td>Log only</td></tr>
+                    </tbody>
+                </table>
+                <pre><code># Generate Cloudflare WAF rules
+cad guardrail --source shopify --platform cloudflare --format commands
+
+# Generate AWS WAF v2 rules
+cad guardrail --source shopify --platform aws_waf --format json
+
+# Continuous monitoring with alerts
+cad watch --source shopify --interval 30m --threshold 25</code></pre>
+            </div>
+            <div class="project-evasion">
+                <h2>Real-World Results</h2>
+                <p>Running CAD against a production Shopify store (7-day analysis window):</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+                    <tbody>
+                        <tr><td>Abuse Score</td><td>11.2/100 (Normal)</td></tr>
+                        <tr><td>Events Analyzed</td><td>676</td></tr>
+                        <tr><td>Detections</td><td>1 (Hidden Product Targeting)</td></tr>
+                        <tr><td>Finding</td><td>8 events targeting warranty products from 2 IPs</td></tr>
+                    </tbody>
+                </table>
+                <p>The finding prompted investigation into how hidden warranty products were being discovered through Shopify Storefront API enumeration by automated bots.</p>
+            </div>
+            <div class="project-lessons">
+                <h2>Attack Chain Research</h2>
+                <p>Phase 3 of the project documents real attack patterns observed in production:</p>
+                <ul>
+                    <li><strong>001: Hidden Product Card-Testing</strong> -- How attackers discover $0 products via API enumeration and use them for card validation. Includes attack economics, detection signatures, and defense playbook.</li>
+                    <li><strong>002: App-Layer Defense Bypass</strong> -- Why client-side bot mitigation (JS fingerprinting, CAPTCHA) is necessary but insufficient. Analyzes 5 bypass techniques and the case for multi-layer defense.</li>
+                </ul>
+            </div>
+            <div class="project-report">
+                <h2>Technical Stack</h2>
+                <ul>
+                    <li><strong>Language:</strong> Python 3.10+ with Pydantic data models</li>
+                    <li><strong>Data Sources:</strong> Shopify Admin REST API, Cloudflare GraphQL Analytics API</li>
+                    <li><strong>WAF Targets:</strong> Cloudflare WAF, AWS WAF v2 (IPSet, ByteMatch, RateBasedStatement)</li>
+                    <li><strong>CI/CD:</strong> GitHub Actions (lint + test on Python 3.10/3.11/3.12)</li>
+                    <li><strong>Tests:</strong> 60 unit tests (pytest)</li>
+                    <li><strong>License:</strong> MIT</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/commerce-abuse-defense" target="_blank">View on GitHub</a></p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container"><p>2026 Mason Kim. All rights reserved.</p></div>
+    </footer>
+</body>
+</html>
