@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS WAF Security Framework - Mason Kim</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>AWS WAF Security Framework</h1>
+                <div class="project-meta">
+                    <span class="project-period">Production Deployment</span>
+                    <span class="project-status">v1.0.0 Released</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Terraform</span>
+                    <span class="tech-tag">AWS WAF v2</span>
+                    <span class="tech-tag">CloudFront</span>
+                    <span class="tech-tag">DevSecOps</span>
+                    <span class="tech-tag">eCommerce</span>
+                </div>
+            </div>
+        </header>
+        <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>Production-tested</strong> Terraform modules for AWS WAF v2 (REGIONAL scope for ALB)</li>
+                    <li><strong>90%+ threat reduction</strong> across global eCommerce properties (US, EU, AU, MX)</li>
+                    <li><strong>Bot traffic reduced</strong> from 30%+ to under 3%</li>
+                    <li><strong>CI pipeline</strong> with tfsec and Checkov security scanning</li>
+                    <li><strong>99.97% uptime</strong> across all protected endpoints</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/aws-waf-security-framework" target="_blank">View Repository on GitHub</a></p>
+            </div>
+
+            <div class="project-abstract">
+                <h2>The Problem</h2>
+                <p>
+                    Global eCommerce platforms face a constant barrage of automated threats: credential stuffing bots,
+                    content scrapers, card-testing attacks, and inventory manipulation. While AWS WAF provides the building
+                    blocks for defense, configuring it correctly for eCommerce workloads requires deep knowledge of both
+                    attack patterns and Terraform best practices. Most publicly available WAF modules are generic and
+                    miss eCommerce-specific protections like checkout rate limiting and bot behavior challenges.
+                </p>
+            </div>
+
+            <div class="project-section">
+                <h2>Architecture</h2>
+                <pre style="background: #1e293b; padding: 20px; border-radius: 8px; overflow-x: auto; color: #e2e8f0; font-size: 14px; line-height: 1.5;">
+Internet Traffic
+      |
+      v
++-----------+     +------------------+     +------------------+
+| CloudFront| --> | WAF WebACL       | --> | ALB              |
+| (CDN)     |     | (REGIONAL scope) |     | (Application LB) |
++-----------+     +------------------+     +------------------+
+                        |                         |
+                  +-----+-----+             +-----+-----+
+                  |           |             |           |
+              Managed     Custom        Target      Health
+              Rules       Rules         Groups      Checks
+              - Common    - Rate Limit
+              - SQLi      - Geo Block
+              - Bad Input - IP Whitelist
+              - IP Rep
+                  |
+            +-----+-----+
+            |           |
+        CloudWatch   WAF Logs
+        Metrics      (Sampled)
+                </pre>
+            </div>
+
+            <div class="project-section">
+                <h2>Module Structure</h2>
+                <pre style="background: #1e293b; padding: 20px; border-radius: 8px; overflow-x: auto; color: #e2e8f0; font-size: 14px;">
+aws-waf-security-framework/
+|-- main.tf                    # Root module configuration
+|-- variables.tf               # Input variables with validation
+|-- outputs.tf                 # Module outputs (ACL ID, ARN)
+|-- versions.tf                # Provider version constraints
+|-- modules/
+|   |-- waf-regional/
+|       |-- main.tf            # Reusable WAF module
+|       |-- variables.tf       # Module variables
+|       |-- outputs.tf         # Module outputs
+|-- examples/
+|   |-- basic/                 # Basic usage example
+|-- .github/workflows/
+    |-- terraform.yml          # CI: fmt, validate, tfsec, Checkov
+                </pre>
+            </div>
+
+            <div class="project-section">
+                <h2>Managed Rule Groups</h2>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #475569;">
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Rule Group</th>
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Protection</th>
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">AWSManagedRulesCommonRuleSet</td>
+                            <td style="padding: 12px; color: #cbd5e1;">OWASP Top 10, cross-site scripting, path traversal</td>
+                            <td style="padding: 12px; color: #cbd5e1;">10</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">AWSManagedRulesSQLiRuleSet</td>
+                            <td style="padding: 12px; color: #cbd5e1;">SQL injection patterns</td>
+                            <td style="padding: 12px; color: #cbd5e1;">20</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">AWSManagedRulesKnownBadInputsRuleSet</td>
+                            <td style="padding: 12px; color: #cbd5e1;">Log4j/JNDI, Java deserialization, host header attacks</td>
+                            <td style="padding: 12px; color: #cbd5e1;">30</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">AWSManagedRulesAmazonIpReputationList</td>
+                            <td style="padding: 12px; color: #cbd5e1;">Known malicious IPs, botnets, anonymizers</td>
+                            <td style="padding: 12px; color: #cbd5e1;">40</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">Rate-Based Rule</td>
+                            <td style="padding: 12px; color: #cbd5e1;">Configurable per-IP request throttling</td>
+                            <td style="padding: 12px; color: #cbd5e1;">50</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; color: #e2e8f0;">Geo-Blocking Rule</td>
+                            <td style="padding: 12px; color: #cbd5e1;">Country-level access control</td>
+                            <td style="padding: 12px; color: #cbd5e1;">60</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="project-section">
+                <h2>Production Results</h2>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #475569;">
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Metric</th>
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Before</th>
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">After</th>
+                            <th style="text-align: left; padding: 12px; color: #94a3b8;">Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">Bot Traffic</td>
+                            <td style="padding: 12px; color: #ef4444;">30%+</td>
+                            <td style="padding: 12px; color: #10b981;">Under 3%</td>
+                            <td style="padding: 12px; color: #10b981;">-90%</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">Blocked Threats</td>
+                            <td style="padding: 12px; color: #ef4444;">Manual</td>
+                            <td style="padding: 12px; color: #10b981;">Automated</td>
+                            <td style="padding: 12px; color: #10b981;">90%+ auto-blocked</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #334155;">
+                            <td style="padding: 12px; color: #e2e8f0;">Uptime</td>
+                            <td style="padding: 12px; color: #cbd5e1;">99.9%</td>
+                            <td style="padding: 12px; color: #10b981;">99.97%</td>
+                            <td style="padding: 12px; color: #10b981;">+0.07%</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; color: #e2e8f0;">WAF Latency</td>
+                            <td style="padding: 12px; color: #cbd5e1;">N/A</td>
+                            <td style="padding: 12px; color: #10b981;">&lt;2ms avg</td>
+                            <td style="padding: 12px; color: #10b981;">Negligible</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="project-section">
+                <h2>Quick Start</h2>
+                <pre style="background: #1e293b; padding: 20px; border-radius: 8px; overflow-x: auto; color: #e2e8f0; font-size: 14px;"><code>module "waf" {
+  source      = "./modules/waf-regional"
+  name_prefix = "production"
+
+  enable_common_rules                = true
+  enable_sql_injection_protection    = true
+  enable_known_bad_inputs_protection = true
+  enable_ip_reputation_protection    = true
+
+  enable_rate_limiting = true
+  rate_limit_threshold = 2000
+
+  alb_arn = aws_lb.main.arn
+
+  tags = {
+    Environment = "production"
+    ManagedBy   = "terraform"
+  }
+}</code></pre>
+            </div>
+
+            <div class="project-section">
+                <h2>Key Learnings</h2>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; color: #cbd5e1;">WAF evaluation order matters -- IP reputation rules should run before application-layer rules to block known-bad sources early</li>
+                    <li style="padding: 8px 0; color: #cbd5e1;">Rate limiting must be tuned per-endpoint, not globally -- checkout flows have different thresholds than product pages</li>
+                    <li style="padding: 8px 0; color: #cbd5e1;">CloudFront and ALB WAF scopes (CLOUDFRONT vs REGIONAL) cannot share the same WebACL -- each requires its own</li>
+                    <li style="padding: 8px 0; color: #cbd5e1;">Soft-fail mode in CI (tfsec/Checkov) prevents false positives from blocking legitimate WAF configurations</li>
+                    <li style="padding: 8px 0; color: #cbd5e1;">WAF logging with block-only filters reduces CloudWatch costs by 80%+ while retaining security-relevant events</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
