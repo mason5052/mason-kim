@@ -2,8 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mason5052.github.io/mason-kim/</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://mason5052.github.io/mason-kim/projects/enterprise-llm-compliance-architecture.html</loc>
+    <lastmod>2026-05-06</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mason5052.github.io/mason-kim/projects/enterprise-data-ontology-patterns.html</loc>
+    <lastmod>2026-05-06</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mason5052.github.io/mason-kim/projects/commerce-abuse-defense.html</loc>

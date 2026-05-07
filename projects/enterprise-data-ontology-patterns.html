@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Data Ontology Patterns - Mason Kim</title>
+    <meta name="description" content="A 5-pillar reference for shaping enterprise data into a metric ontology that policy engines, audit pipelines, and LLM gateways can decide on: domain decomposition, entity-axis modeling, metric lifecycle, and worked Sales + Supply Chain examples.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>Enterprise Data Ontology Patterns</h1>
+                <div class="project-meta">
+                    <span class="project-period">Q2 2026</span>
+                    <span class="project-status">Open-Source Reference Patterns</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">Data Modeling</span>
+                    <span class="tech-tag">Metric Ontology</span>
+                    <span class="tech-tag">Domain-Driven Design</span>
+                    <span class="tech-tag">SALES</span>
+                    <span class="tech-tag">SCM</span>
+                    <span class="tech-tag">YAML</span>
+                    <span class="tech-tag">Mermaid</span>
+                </div>
+            </div>
+        </header>
+        <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>5-pillar pattern set</strong>: domain decomposition -&gt; entity/axis modeling -&gt; metric ontology -&gt; SALES worked example -&gt; SCM worked example</li>
+                    <li><strong>6 first-class axes</strong>: Entity, Time, Currency, Customer, Product, Region -- all modeled, none implicit</li>
+                    <li><strong>Metric naming convention</strong>: <code>{domain}.{concept}.{qualifier(s)}.{unit_or_method}</code> -- machine-decidable, lifecycle-tracked</li>
+                    <li><strong>Cross-domain reconciliation</strong> via <code>fin_variant</code> links (SALES.bookings &lt;-&gt; FIN.revenue, SCM.inventory.usd_at_cost &lt;-&gt; FIN.cost) with declared tolerance</li>
+                    <li><strong>Worked YAMLs</strong>: 12 SALES metrics + 14 SCM metrics, fully spec'd with formula, axes, role-level floor, freshness SLA, deprecation transitions</li>
+                    <li><strong>Worked trace</strong>: full 9-step request -&gt; resolved-entities JSON for "Q3 FY26 weighted pipeline for SUB-A, Family A1" against the companion compliance pipeline</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/enterprise-data-ontology-patterns" target="_blank">View Repository on GitHub</a></p>
+            </div>
+
+            <div class="project-abstract">
+                <h2>Why an Ontology</h2>
+                <p>An LLM gateway can run flawless authorization, classification, and redaction -- and still produce wrong answers if the underlying data is shaped as ad-hoc tables. "Show me Q3 pipeline for SUB-A" only has a single decidable answer when "pipeline" is a registered metric, "Q3" resolves to a specific fiscal calendar, and "SUB-A" is a known entity with a known scope. Without that structure, the LLM hallucinates plausible numbers from whatever rows it can see.</p>
+                <p>This repo captures the structured-knowledge layer that makes the compliance pipeline decidable. It is the natural complement to the <a href="enterprise-llm-compliance-architecture.html">Enterprise LLM Compliance Architecture</a>: the policy engine cannot enforce a domain floor without registered domains, and the audit log cannot reconstruct a decision without registered metric IDs.</p>
+            </div>
+
+            <div class="project-overview">
+                <h2>The 5 Pillars</h2>
+                <pre><code>+----------------------------+    +-----------------------------+
+| 01. Domain Decomposition   |--&gt;| 02. Entity-Axis Modeling    |
+|  - 7 domains               |    |  - 6 first-class axes       |
+|  - sensitivity floor       |    |  - rollup hierarchies       |
+|  - owner team / role       |    |  - PII / volatile flags     |
++----------------------------+    +--------------+--------------+
+                                                 |
+                                                 v
+                                  +-----------------------------+
+                                  | 03. Metric Ontology         |
+                                  |  - naming convention        |
+                                  |  - lifecycle states         |
+                                  |  - lineage + cross-links    |
+                                  +-----+-----------------+-----+
+                                        |                 |
+                                        v                 v
+                            +-----------------+ +-------------------+
+                            | 04. SALES       | | 05. SCM           |
+                            |   Worked        | |   Worked          |
+                            |   Example       | |   Example         |
+                            +-----------------+ +-------------------+</code></pre>
+            </div>
+
+            <div class="project-background">
+                <h2>Domain Decomposition</h2>
+                <p>Seven business domains, each with a single owning team role and a sensitivity floor (the minimum level any metric in that domain can carry):</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Domain</th><th>Sensitivity Floor</th><th>Sample Metrics</th></tr></thead>
+                    <tbody>
+                        <tr><td>FIN</td><td>INTERNAL</td><td>revenue, cost, AP, AR</td></tr>
+                        <tr><td>HR</td><td>CONFIDENTIAL</td><td>headcount, attrition, comp</td></tr>
+                        <tr><td>SALES</td><td>INTERNAL</td><td>pipeline, bookings, ARR, NRR</td></tr>
+                        <tr><td>SCM</td><td>INTERNAL</td><td>inventory, shipment, vendor spend</td></tr>
+                        <tr><td>ENG</td><td>INTERNAL</td><td>deploy frequency, MTTR, error budget</td></tr>
+                        <tr><td>OPS</td><td>INTERNAL</td><td>SLA attainment, ticket volume</td></tr>
+                        <tr><td>LEGAL</td><td>CONFIDENTIAL</td><td>contracts, recall events, NDAs</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="project-exploit">
+                <h2>Entity and Axis Modeling</h2>
+                <p>Five entity codes (organizational structure) combined with six first-class axes (analytical dimensions). Every metric declares its axes explicitly -- no implicit defaults that hide drift.</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Axis</th><th>Default</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Entity</td><td>SUB-A</td><td>CORP / SUB-A / SUB-B / SUB-C / JV-X. JV inherits parent's domain rule plus one role-level.</td></tr>
+                        <tr><td>Time</td><td>quarter, fiscal calendar</td><td>Valid grains: day / week / month / quarter / year</td></tr>
+                        <tr><td>Currency</td><td>USD, spot_at_txn</td><td>FX method declared per metric -- spot, period_avg, period_end</td></tr>
+                        <tr><td>Customer</td><td>none</td><td>PII axis, volatile -- triggers Redactor and CONFIDENTIAL floor</td></tr>
+                        <tr><td>Product</td><td>family</td><td>Rollup levels: sku / family / category / all</td></tr>
+                        <tr><td>Region</td><td>none</td><td>Rollup levels: country / subregion / region / global</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="project-evasion">
+                <h2>Metric Ontology and Lifecycle</h2>
+                <p><strong>Naming convention</strong>: <code>{domain}.{concept}.{qualifier(s)}.{unit_or_method}</code></p>
+                <table class="ioc-table">
+                    <thead><tr><th>Metric ID</th><th>Domain</th><th>Min Role-Level</th><th>FX Method</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>sales.pipeline.open.usd_weighted</code></td><td>SALES</td><td>STAFF</td><td>spot_at_txn</td></tr>
+                        <tr><td><code>sales.bookings.gross.usd_period_avg</code></td><td>SALES</td><td>STAFF</td><td>period_avg</td></tr>
+                        <tr><td><code>sales.revenue.arr.usd_period_end</code></td><td>SALES</td><td>STAFF</td><td>period_end</td></tr>
+                        <tr><td><code>sales.revenue.nrr.pct</code></td><td>SALES</td><td>LEAD</td><td>n/a</td></tr>
+                        <tr><td><code>scm.inventory.on_hand.usd_at_cost</code></td><td>SCM</td><td>STAFF</td><td>period_end</td></tr>
+                        <tr><td><code>scm.vendor.spend.usd_period_avg</code></td><td>SCM</td><td>LEAD</td><td>period_avg</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Lifecycle</strong>: <code>draft -&gt; approved -&gt; deprecated -&gt; retired</code> with a 90-day transition window. Deprecated metrics keep resolving but emit warnings; retired metrics return a deny with the replacement ID.</p>
+                <p><strong>Cross-domain reconciliation</strong>: a metric in one domain can declare a <code>cross_domain_link</code> to another, with a numeric tolerance. Example: <code>sales.bookings.gross.usd_period_avg</code> reconciles to <code>fin.revenue.gross.usd_period_avg</code> within 0.5%. Out-of-tolerance reconciliations surface as audit anomalies, not silent drift.</p>
+            </div>
+
+            <div class="project-lessons">
+                <h2>Worked Examples: SALES and SCM</h2>
+                <p><strong>SALES</strong> models the full lead-to-cash entity graph: Lead -&gt; Account -&gt; Contact (PII), Opportunity -&gt; Deal -&gt; Contract -&gt; LineItem. Stages are a state machine with default close probabilities (qualified 10%, discovery 25%, proposal 50%, negotiation 75%, closed_won 100%). The repo includes 12 fully-spec'd metrics in YAML covering pipeline (count / unweighted USD / weighted USD), bookings (gross / net), revenue (gross / ARR / NRR), and customer counts (acquisition / churn / list-with-contact with PII redaction).</p>
+                <p><strong>SCM</strong> models the supply-chain graph: SKU (NPI -&gt; GA -&gt; EOL -&gt; EOSL), Lot (in_qa -&gt; released -&gt; shipped -&gt; consumed/expired/recalled), Shipment (booked -&gt; in_transit -&gt; delivered/exception). The repo includes 14 fully-spec'd metrics covering inventory (units / USD-at-cost / expiring / recalled / DIO), shipment (in-transit / OTD / exception), lane (lead-time / cost-per-unit), and vendor (spend / OTD / defect-rate / concentration). Vendor concentration above 40% triggers a SECRET-tier flag and a quarterly OPS+LEGAL review -- a worked example of a numeric threshold escalating sensitivity.</p>
+            </div>
+
+            <div class="project-report">
+                <h2>Repository Layout</h2>
+                <ul>
+                    <li><strong>docs/01-domain-decomposition.md</strong> -- 7 domains, owner roles, sensitivity floors</li>
+                    <li><strong>docs/02-entity-axis-modeling.md</strong> -- 5 entities x 6 axes with rollup hierarchies</li>
+                    <li><strong>docs/03-metric-ontology.md</strong> -- naming, lifecycle, cross-domain reconciliation</li>
+                    <li><strong>docs/04-sales-domain-example.md</strong> -- worked SALES example, lead-to-cash</li>
+                    <li><strong>docs/05-supply-chain-domain-example.md</strong> -- worked SCM example, lots and lanes</li>
+                    <li><strong>diagrams/</strong> -- 3 Mermaid diagrams (domain map, SALES entity + stage machine, SCM entity + 3 lifecycle machines)</li>
+                    <li><strong>examples/</strong> -- 4 worked artifacts (ontology config YAML, sales-metrics YAML, supply-chain-metrics YAML, full ontology query trace JSON)</li>
+                </ul>
+                <p>Companion architecture: <a href="enterprise-llm-compliance-architecture.html">Enterprise LLM Compliance Architecture</a> -- the request pipeline that consumes this ontology to make policy and audit decisions.</p>
+                <p><a href="https://github.com/mason5052/enterprise-data-ontology-patterns" target="_blank">View on GitHub</a></p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container"><p>2026 Mason Kim. All rights reserved.</p></div>
+    </footer>
+</body>
+</html>

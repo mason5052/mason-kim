@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise LLM Compliance Architecture - Mason Kim</title>
+    <meta name="description" content="A 9-step compliance pipeline architecture for enterprise LLM gateways: hybrid sensitivity classification, 3-axis access policy, redaction, dual gates, and 7-year auditability.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="project-details.css">
+</head>
+<body class="dark-theme">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="../index.html" class="nav-brand">Mason Kim</a>
+            <div class="nav-links">
+                <a href="../index.html#projects">Projects</a>
+            </div>
+        </div>
+    </nav>
+    <main class="project-detail">
+        <header class="project-header">
+            <div class="container">
+                <h1>Enterprise LLM Compliance Architecture</h1>
+                <div class="project-meta">
+                    <span class="project-period">Q2 2026</span>
+                    <span class="project-status">Open-Source Reference Architecture</span>
+                </div>
+                <div class="project-tags">
+                    <span class="tech-tag">LLM Security</span>
+                    <span class="tech-tag">Policy Engine</span>
+                    <span class="tech-tag">Hybrid Classification</span>
+                    <span class="tech-tag">PII Redaction</span>
+                    <span class="tech-tag">Audit &amp; Observability</span>
+                    <span class="tech-tag">AWS</span>
+                    <span class="tech-tag">Lambda</span>
+                    <span class="tech-tag">DynamoDB</span>
+                </div>
+            </div>
+        </header>
+        <section class="project-content container">
+            <div class="tldr">
+                <h2>TL;DR</h2>
+                <ul>
+                    <li><strong>9-step request pipeline</strong>: Identity -&gt; Input Gate -&gt; Classification -&gt; Policy -&gt; Routing -&gt; Redactor -&gt; LLM -&gt; Output Gate -&gt; Audit</li>
+                    <li><strong>Hybrid sensitivity classifier</strong> fusing keyword + semantic axes with fail-closed upgrades and a kill switch</li>
+                    <li><strong>3-axis access policy</strong>: Entity x Domain x Role-Level with cross-domain rules and PII drop-fields</li>
+                    <li><strong>Local-first routing</strong> with explicit user-consent escalation to a cloud LLM (vendor-agnostic) and full conversation continuity</li>
+                    <li><strong>Append-only audit</strong> with 7-year S3 Object Lock retention, OpenSearch warm index, and DynamoDB hot tier</li>
+                    <li><strong>Open-source companion repo</strong> with 6 docs, 4 architecture diagrams (Mermaid), 4 worked examples (policy YAML, IAM, request traces, classifier outputs)</li>
+                </ul>
+                <p><a href="https://github.com/mason5052/enterprise-llm-compliance-architecture" target="_blank">View Repository on GitHub</a></p>
+            </div>
+
+            <div class="project-abstract">
+                <h2>The Problem</h2>
+                <p>Enterprises deploying LLM assistants on internal data face a recurring failure mode: pipelines trust the model to enforce access controls. The model is trained to be helpful, not to be a security boundary. A senior employee's correctly-scoped query and a junior employee's out-of-scope query look identical to the model. The gap is filled by surrounding the LLM with code-enforced gates -- a compliance pipeline that runs <em>before</em> and <em>after</em> the model on every turn.</p>
+                <p>This project is the <strong>reference architecture</strong> for that pipeline. It is vendor-agnostic, fully synthetic, and open-source. The repository captures the design decisions, trade-offs, and worked examples needed for a security or platform team to stand up an equivalent system.</p>
+            </div>
+
+            <div class="project-overview">
+                <h2>The 9-Step Pipeline</h2>
+                <pre><code>User Query                                                       Final Response
+    |                                                                  ^
+    v                                                                  |
++----------+   +-----------+   +-----------+   +--------+   +----------+
+| 1. Auth  |--&gt;| 2. Input  |--&gt;| 3. Hybrid |--&gt;| 4. 3-  |--&gt;| 5. Local |
+| /Identity|   |   Gate    |   |  Classify |   |   Axis |   |   vs    |
++----------+   +-----------+   +-----------+   |  Policy|   |  Cloud  |
+                                               +--------+   +----+----+
+                                                                 |
+                                                                 v
+                                                            +----------+
+                                                            | 6. PII   |
+                                                            | Redactor |
+                                                            +----+-----+
+                                                                 |
+                                                                 v
+                                                            +----------+
+                                                            | 7. LLM   |
+                                                            | Inference|
+                                                            +----+-----+
+                                                                 |
+                                                                 v
+                                                            +----------+
+                                                            | 8. Output|
+                                                            |   Gate   |
+                                                            +----+-----+
+                                                                 |
+                                                                 v
+                                                            +----------+
+                                                            | 9. Audit |
+                                                            |   Sink   |
+                                                            +----------+</code></pre>
+                <p>Each step has a single, narrow responsibility. The pipeline is fail-closed: any unhandled error short-circuits to DENY rather than ALLOW. Steps cannot de-escalate -- a step can raise sensitivity but never lower it.</p>
+            </div>
+
+            <div class="project-background">
+                <h2>Hybrid Sensitivity Classification</h2>
+                <p>Step 3 fuses two independent classification axes:</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Axis</th><th>Engine</th><th>Strength</th><th>Weakness</th></tr></thead>
+                    <tbody>
+                        <tr><td>Keyword</td><td>Vendored YAML score table (deterministic)</td><td>Fast, cheap, auditable, rule-versionable</td><td>Misses paraphrase and obfuscation</td></tr>
+                        <tr><td>Semantic</td><td>Local LLM with strict JSON-only prompt</td><td>Catches paraphrase, intent, indirect signals</td><td>Slower, costs tokens, can answer UNKNOWN</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Fusion rule</strong>: <code>level = MAX(keyword_level, semantic_level)</code>. <strong>Fail-closed upgrade</strong>: if semantic returns <code>UNKNOWN</code> and keyword score &gt;= 30, promote to SECRET regardless of either individual axis. <strong>Kill switch</strong>: setting <code>SEMANTIC_CLASSIFIER_ENABLED=false</code> reverts to keyword-only mode without changing pipeline shape.</p>
+            </div>
+
+            <div class="project-exploit">
+                <h2>3-Axis Access Policy</h2>
+                <p>Authorization is computed across three independent axes with a fully-deterministic decision table:</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Axis</th><th>Values</th><th>Source</th></tr></thead>
+                    <tbody>
+                        <tr><td>Entity</td><td>CORP, SUB-A, SUB-B, SUB-C, JV-X</td><td>HRIS / org chart</td></tr>
+                        <tr><td>Domain</td><td>FIN, HR, SALES, SCM, ENG, OPS, LEGAL</td><td>Department mapping</td></tr>
+                        <tr><td>Role Level</td><td>STAFF (1), LEAD (2), DEPT (3), EXEC (4)</td><td>HRIS role tier</td></tr>
+                    </tbody>
+                </table>
+                <p>Rules combine the resolved query's sensitivity, target entity, and target domain with the requester's scope and role-level. Cross-domain joins (e.g., HR x SALES) take the <em>maximum</em> floor of all involved domains and apply additional drop-field rules to strip PII before the request reaches the LLM. The policy engine emits a fully-decomposed decision record into the audit log -- no opaque ALLOW/DENY tokens.</p>
+            </div>
+
+            <div class="project-evasion">
+                <h2>Local-First Routing with Explicit Consent</h2>
+                <p>Most queries route to a self-hosted LLM (private VPC, no egress). When the local model fails -- tool-loop, vLLM 5xx, malformed output, or unreachable endpoint -- the router does <strong>not</strong> silently escalate. Instead:</p>
+                <ol>
+                    <li>Sensitivity is re-classified on the failed query.</li>
+                    <li>SECRET-tier queries surface a localized failure message with the concrete reason and <strong>never</strong> offer external escalation.</li>
+                    <li>INTERNAL/CONFIDENTIAL queries surface a 3-button consent card: <em>Send to external AI</em> / <em>Cancel</em> / <em>Ask differently</em>.</li>
+                    <li>If the user clicks send, conversation history is sanitized, PII is re-redacted, the cloud LLM receives a stripped request, and the response is filtered by the output gate before joining the conversation.</li>
+                </ol>
+                <p>The vendor-facing UI string uses generic vendor + model display names (e.g., "Claude Sonnet 4.5 via Anthropic"). The infrastructure-facing vocabulary -- internal service names, vLLM, internal IPs -- is deliberately absent from user surfaces.</p>
+            </div>
+
+            <div class="project-lessons">
+                <h2>Audit and Observability</h2>
+                <p>The audit sink is the system of record. Every request emits a single ULID-keyed audit envelope into three tiers:</p>
+                <table class="ioc-table">
+                    <thead><tr><th>Tier</th><th>Backing Store</th><th>Retention</th><th>Use Case</th></tr></thead>
+                    <tbody>
+                        <tr><td>Hot</td><td>DynamoDB <code>audit-recent</code></td><td>7 days TTL</td><td>Operator triage, real-time queries</td></tr>
+                        <tr><td>Warm</td><td>OpenSearch index</td><td>90 days</td><td>Investigations, compliance queries, dashboards</td></tr>
+                        <tr><td>Cold</td><td>S3 with Object Lock</td><td>7 years (immutable)</td><td>Regulatory audit, post-incident forensics</td></tr>
+                    </tbody>
+                </table>
+                <p>The S3 cold tier is write-once-read-many. Object Lock + bucket-level deny on <code>s3:DeleteObject</code> + versioning prevents tampering even by privileged operators. A separate audit-ingestion Lambda owns the write path; the gateway Lambda has no S3 delete permissions.</p>
+            </div>
+
+            <div class="project-report">
+                <h2>Repository Layout</h2>
+                <ul>
+                    <li><strong>docs/01-overview.md</strong> -- problem statement and design tenets</li>
+                    <li><strong>docs/02-pipeline-stages.md</strong> -- the 9-step pipeline in detail</li>
+                    <li><strong>docs/03-classification.md</strong> -- hybrid keyword + semantic classifier</li>
+                    <li><strong>docs/04-policy-engine.md</strong> -- 3-axis access policy and cross-domain rules</li>
+                    <li><strong>docs/05-deployment-architecture.md</strong> -- VPC, Lambdas, IAM, CFN stack split</li>
+                    <li><strong>docs/06-audit-and-observability.md</strong> -- 3-tier audit, schemas, retention</li>
+                    <li><strong>diagrams/</strong> -- 4 Mermaid architecture diagrams (request lifecycle, classification, policy decision tree, deployment topology)</li>
+                    <li><strong>examples/</strong> -- 4 worked artifacts (policy YAML, IAM JSON, request trace, classifier output)</li>
+                </ul>
+                <p>Companion deep-dive: <a href="enterprise-data-ontology-patterns.html">Enterprise Data Ontology Patterns</a> -- the structured-knowledge layer that makes Step 4 (policy) and Step 9 (audit) decidable.</p>
+                <p><a href="https://github.com/mason5052/enterprise-llm-compliance-architecture" target="_blank">View on GitHub</a></p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="container"><p>2026 Mason Kim. All rights reserved.</p></div>
+    </footer>
+</body>
+</html>
